@@ -18,6 +18,7 @@ LIST FROM "Projects" WHERE contains(area, this.file.link) AND status = "active"
 ```
 
 # Обзор
+
 >  [[YYYY-Www|Разбор недели YYYY-Www]]
 
 ---
@@ -50,7 +51,9 @@ LIST FROM "Projects" WHERE contains(area, this.file.link) AND status = "active"
     
 
 # Доп Информация
+
 > Любая статичная информация, которая должна быть под рукой: контакты, номера, важные даты, личные рекорды и т.д.
 
 # Ресурсы
+
 > Ссылки на 3-5 самых важных заметок из папки "3. Resources", которые являются фундаментом для этой сферы.
