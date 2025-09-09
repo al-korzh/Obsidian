@@ -60,4 +60,4 @@ LIST FROM "Projects" WHERE contains(area, this.file.link) AND status = "active"
 
 # Ресурсы
 
-> Ссылки на 3-5 самых важных заметок из папки "3. Resources", которые являются фундаментом для этой сферы.
+```dataview LIST FROM "3. Resources" WHERE contains(file.tags, "#resource/athletics") SORT file.name ASC```
