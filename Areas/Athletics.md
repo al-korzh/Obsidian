@@ -21,7 +21,7 @@ LIST FROM "Projects" WHERE contains(area, this.file.link) AND status = "active"
 
 >  [[YYYY-Www|Разбор недели YYYY-Www]]
 
-**1. Объективный Отчет (Что было?)**
+**1. Отчет (Что было?)**
 
 - **Консистентность:**
 	Выполнено **n** из **N** запланированных тренировок.
