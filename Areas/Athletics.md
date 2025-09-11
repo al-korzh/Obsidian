@@ -25,7 +25,7 @@ LIST FROM "Projects" WHERE contains(area, this.file.link) AND status = "active"
 
 [[<% tp.date.now("YYYY-[W]WW") %>|Перейти к обзору текущей недели]]
 
-
+<%* await tp.file.include("[[Templates/Areas Reviews/Athletics|Athletics]]") %>
 
 
 # Доп Информация
