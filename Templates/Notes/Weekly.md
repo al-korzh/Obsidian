@@ -6,6 +6,6 @@ date:
 processed: false
 ---
 
-# Еженедельный обзор <% tp.date.now("YYYY, [W]WW") %>
+# Weekly Review <% tp.date.now("YYYY, [W]WW") %>
 <%* await tp.file.include("[[Templates/TPL-Обзор-Атлетика]]") %> 
 <%* await tp.file.include("[[Templates/TPL-Обзор-Финансы]]") %>
