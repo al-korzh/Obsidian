@@ -26,7 +26,7 @@ LIST FROM "Projects" WHERE contains(area, this.file.link) AND status = "active"
 button
 name Перейти к обзору текущей недели
 type command
-action "Команда для выполнения"
+action "Periodic Notes: Open weekly note"
 
 ![[Templates/Areas Reviews/Athletics]]
 
