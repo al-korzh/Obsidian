@@ -5,7 +5,7 @@ tags:
 date:
 processed: false
 ---
-<%* 
+	<%* 
 // 1. Указываем путь к папке с шаблонами обзоров 
 const folderPath = "Templates/Area Reviews"; 
 new Notice(`1. Ищу файлы в папке: "${folderPath}"`);
