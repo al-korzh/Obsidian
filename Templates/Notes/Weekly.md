@@ -24,7 +24,7 @@ reviewFiles.sort((a, b) => a.name.localeCompare(b.name));
 // 4. Вставляем содержимое каждого файла в цикле
 for (const file of reviewFiles) { 
 	const areaName = file.basename;
-	const header = `### [[${areaName}]]\n`;
+	const header = `### [[${areaName}]]\n\n`;
 	tR += header;
 	tR += await tp.file.include(`[[${file.path}]]`); 
 	// Добавляем разделитель для красоты
