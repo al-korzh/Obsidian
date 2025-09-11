@@ -8,9 +8,16 @@ processed: false
 <%* 
 // 1. Указываем путь к папке с шаблонами обзоров 
 const folderPath = "Templates/Area Reviews"; 
+new Notice(`1. Ищу файлы в папке: "${folderPath}"`);
 
 // 2. Получаем все файлы из этой папки 
 const reviewFiles = app.vault.getFiles().filter(file => file.path.startsWith(folderPath));
+
+new Notice(`2. Найдено подходящих файлов: ${reviewFiles.length}`);
+
+if (reviewFiles.length === 0) { 
+	new Notice("ОШИБКА: Файлы не найдены. Проверьте, что путь в скрипте и название папки совпадают на 100%.", 10000); 
+}
 
 // 3. Сортируем файлы по имени (необязательно, но делает порядок предсказуемым)
 reviewFiles.sort((a, b) => a.name.localeCompare(b.name));

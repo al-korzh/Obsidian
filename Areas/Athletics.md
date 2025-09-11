@@ -29,7 +29,7 @@ type command
 action Periodic Notes: Open weekly note
 ```
 
-![[Templates/Areas Reviews/Athletics]]
+![[Templates/Area Reviews/Athletics]]
 
 
 # Доп Информация
