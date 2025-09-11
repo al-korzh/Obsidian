@@ -23,7 +23,7 @@ LIST FROM "Projects" WHERE contains(area, this.file.link) AND status = "active"
 
 # Обзор
 
->  [[YYYY-Www|Разбор недели YYYY-Www]]
+[[<% tp.date.now("YYYY-[W]WW") %>|Перейти к обзору текущей недели]]
 
 
 
