@@ -60,4 +60,4 @@ LIST FROM "Projects" WHERE contains(area, this.file.link) AND status = "active"
 
 # Ресурсы
 
-```dataview LIST FROM "3. Resources" WHERE contains(file.tags, "#resource/athletics") SORT file.name ASC```
+```dataview LIST FROM "Resources" WHERE contains(file.tags, "#resource/athletics") SORT file.name ASC```
