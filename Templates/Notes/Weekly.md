@@ -16,7 +16,8 @@ const reviewFiles = app.vault.getFiles().filter(file => file.path.startsWith(fol
 reviewFiles.sort((a, b) => a.name.localeCompare(b.name));
 // 4. Вставляем содержимое каждого файла в цикле
 for (const file of reviewFiles) { 
-	await tp.file.include(`[[${file.path}]]`); 
-	tR += "\n\n---\n\n"; // Добавляем разделитель для красоты
+	tR += await tp.file.include(`[[${file.path}]]`); 
+	// Добавляем разделитель для красоты
+	tR += "\n\n---\n\n"; 
 } 
 %>
