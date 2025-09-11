@@ -23,7 +23,10 @@ LIST FROM "Projects" WHERE contains(area, this.file.link) AND status = "active"
 
 # Обзор
 
-[[2025-W37|Перейти к обзору текущей недели]]
+button
+name Перейти к обзору текущей недели
+type command
+action "Команда для выполнения"
 
 ![[Templates/Areas Reviews/Athletics]]
 
