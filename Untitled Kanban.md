@@ -6,7 +6,7 @@ kanban-plugin: board
 
 ## Backlog
 
-- [ ] [[Test]] #ttt @{2025-09-13}
+- [ ] [[Test]]
 
 
 ## In progress
@@ -22,6 +22,6 @@ kanban-plugin: board
 
 %% kanban:settings
 ```
-{"kanban-plugin":"board","list-collapse":[false,false,false],"show-checkboxes":true,"move-tags":true,"tag-action":"kanban","tag-colors":[],"move-dates":true,"show-relative-date":true,"link-date-to-daily-note":true,"date-colors":[],"archive-with-date":true}
+{"kanban-plugin":"board","list-collapse":[false,false,false],"show-checkboxes":false,"move-tags":true,"tag-action":"kanban","tag-colors":[],"move-dates":true,"show-relative-date":true,"link-date-to-daily-note":true,"date-colors":[],"archive-with-date":true,"inline-metadata-position":"footer","move-task-metadata":true,"full-list-lane-width":true}
 ```
 %%
