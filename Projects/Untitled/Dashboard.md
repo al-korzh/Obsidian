@@ -1,4 +1,10 @@
-Хорошо, вот краткий список целевых результатов на Фазу 1 (6-9 месяцев).
+---
+tags:
+  - project
+processed: false
+area: "[[Areas/Athletics|Athletics]]"
+---
+
 
 ### Тело (композиция):
 
