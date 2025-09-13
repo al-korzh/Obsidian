@@ -64,7 +64,7 @@ dv.table(
     // Обрабатываем каждую группу упражнений
     groupedTypes.map(group => {
         // Сортируем все записи для текущего упражнения по дате (от новой к старой)
-        const sortedRows = group.rows.sort(r => r.file.day, 'desc');
+        const sortedRows = group.rows.sort(r => r.file.date, 'desc');
         // Берем самую последнюю запись
         const latest = sortedRows[0];
         // Находим максимальный вес среди всех записей
@@ -76,7 +76,7 @@ dv.table(
             group.rows.length,
             recordWeight,
             `${latest.weight || '?'} x ${latest.reps || '?'}`,
-            latest.file.day ? latest.file.day.toFormat("yyyy-MM-dd") : "Нет даты"
+            latest.file.date ? latest.file.date.toFormat("yyyy-MM-dd") : "Нет даты"
         ];
     })
 );
