@@ -11,5 +11,10 @@ date: 2025-09-13
 	- weight:: 80
 	- reps:: 8
 	- sets:: 4
+2. 
+	- type:: Жим ногами
+	- weight:: 100
+	- reps:: 10
+	- sets:: 4
 
 ---
