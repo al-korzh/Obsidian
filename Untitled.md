@@ -1,4 +1,4 @@
 ```dataview
 TABLE testValue
-FROM "Тест.md"
+FROM "Test.md"
 ```
