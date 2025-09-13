@@ -6,6 +6,7 @@ kanban-plugin: board
 
 ## Backlog
 
+- [ ] [[Projects/Untitled/Tasks/Test|Test]]
 
 
 ## In progress
@@ -17,9 +18,6 @@ kanban-plugin: board
 **Complete**
 
 
-***
-
-## Archive
 
 
 %% kanban:settings
