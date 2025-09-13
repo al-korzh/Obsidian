@@ -41,5 +41,5 @@ TABLE status as "Статус", due as "Срок" FROM #task AND !"Templates" WH
 
 ```dataview
 TABLE myValue
-FROM "Тест"
+FROM "Тест.md"
 ```

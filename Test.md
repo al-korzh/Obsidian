@@ -1,3 +1,3 @@
 ---
-myValue: 123
+myValue: "123"
 ---
