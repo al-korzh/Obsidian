@@ -41,48 +41,35 @@ TABLE status as "Статус", due as "Срок" FROM #task AND !"Templates" WH
 
 
 ```dataviewjs
-// --- ГЛАВНЫЙ СКРИПТ ПРОГРЕССИИ ---
+// --- ДИАГНОСТИЧЕСКИЙ СКРИПТ: ПОКАЗАТЬ ВСЕ ---
+dv.header(3, "Полный отчет по данным в файлах-тренировках");
 
-// 1. УКАЖИТЕ ТОЧНЫЙ ПУТЬ К ПАПКЕ С ЖУРНАЛАМИ ТРЕНИРОВОК
 const FOLDER_PATH = "Projects/Athletics.-1/Logs";
-
 const pages = dv.pages(`"${FOLDER_PATH}"`);
 
 if (pages.length === 0) {
-    dv.paragraph(`❌ **Ошибка:** Не найдено ни одного файла в папке \`${FOLDER_PATH}\`. Проверьте путь.`);
+    dv.error("ОШИБКА: Не найдено ни одного файла в папке. Проверьте путь.");
 } else {
-    // "Разворачиваем" списки из файлов, ищем строки с полем 'type'
-    const exercises = pages
-        .flatMap(p => p.file.lists)
-        .where(l => l.type); // Используем 'type' как вы хотели
+    // Для каждого файла создаем отдельный раздел
+    for (const page of pages) {
+        // Выводим имя файла как заголовок
+        dv.header(4, page.file.link);
 
-    // Группируем по полю 'type'
-    const groupedExercises = exercises.groupBy(l => l.type);
+        // Показываем все свойства из YAML-блока
+        dv.paragraph("**Свойства файла (YAML):**");
+        dv.list(Object.entries(page.file.frontmatter).map(([key, value]) => `${key}: ${value}`));
 
-    // Создаем итоговую таблицу
-    dv.table(
-        ["Упражнение", "Записей", "Рекордный вес (кг)", "Последний результат", "Дата последней"],
-        groupedExercises.map(group => {
-            // Защита от отсутствия даты: сначала фильтруем, потом сортируем
-            const sortedRows = group.rows
-                .filter(r => r.file.date)
-                .sort(r => r.file.date, 'desc');
+        // Показываем все строки-списки и их встроенные поля
+        dv.paragraph("**Найденные строки-списки и их поля:**");
+        for (const item of page.file.lists) {
+            // Пропускаем пустые строки
+            if (!item.text) continue;
 
-            if (sortedRows.length === 0) {
-                return [group.key, group.rows.length, "---", "Нет данных со свойством 'date'", "---"];
-            }
-
-            const latest = sortedRows[0];
-            const recordWeight = Math.max(...group.rows.map(r => r.weight || 0));
-
-            return [
-                group.key,
-                group.rows.length,
-                recordWeight,
-                `${latest.weight || '?'} x ${latest.reps || '?'}`,
-                latest.file.date.toFormat("yyyy-MM-dd")
-            ];
-        })
-    );
+            // Выводим текст строки
+            dv.listItem(`${item.text}`);
+            // Выводим все найденные в ней поля
+            dv.list(Object.entries(item.values).map(([key, value]) => `> ${key} :: ${value}`));
+        }
+    }
 }
 ```
