@@ -10,6 +10,7 @@ areas: "[[Areas/Athletics|Athletics]]"
 - **План тренировок:** [[1. Projects/НАЗВАНИЕ ПАПКИ ПРОЕКТА/План тренировок - Этап 1]] 
 - **Журнал тренировок:** [[1. Projects/НАЗВАНИЕ ПАПКИ ПРОЕКТА/Журнал тренировок/]] 
 - **Аналитика:** [[1. Projects/НАЗВАНИЕ ПАПКИ ПРОЕКТА/Аналитика/]]
+- **Расписание тренировок:**
 ---
 
 ### KPI
@@ -34,9 +35,6 @@ areas: "[[Areas/Athletics|Athletics]]"
 ### Задачи
 
 ```dataview TABLE status as "Статус", due as "Срок" FROM #task AND !"Templates" WHERE project = this.file.link AND status != "done" SORT due ASC```
-
-
-### Расписание тренировок
 
 
 ### Прошедшие тренировки
