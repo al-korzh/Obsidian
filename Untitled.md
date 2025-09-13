@@ -1,6 +1,6 @@
 # Тест парсинга
 
-- Жим лежа (exercise:: "Жим лежа", weight:: 80, reps:: 8, sets:: 4)
+- Жим лежа (exercise:: "Жим лежа"; weight:: 80, reps:: 8, sets:: 4)
 
 ```dataview
 TABLE
