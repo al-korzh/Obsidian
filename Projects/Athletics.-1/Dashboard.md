@@ -39,16 +39,40 @@ TABLE status as "Статус", due as "Срок" FROM #task AND !"Templates" WH
 
 ### Прошедшие тренировки
 
-```dataview
-TABLE
-    length(rows) as "Записей",
-    max(rows.L.weight) as "Рекордный вес (кг)",
-    sort(rows, r => r.file.day, "desc")[0].L.weight + " x " + sort(rows, r => r.file.day, "desc")[0].L.reps as "Последний результат",
-    sort(rows, r => r.file.day, "desc")[0].file.day as "Дата последней"
-FROM "1. Projects/Athletics.-1/Logs"
-FLATTEN file.lists as L
-WHERE L.type
-GROUP BY L.type as "Упражнение"
-SORT "Упражнение" ASC
+```dataviewjs
+// Получаем все данные из логов тренировок
+const pages = dv.pages('"1. Projects/Athletics.-1/Logs"');
+
+// "Разворачиваем" все списки из этих файлов, оставляя только те, где есть поле "type"
+const types = pages
+    .flatMap(p => p.file.lists)
+    .where(l => l.type);
+
+// Группируем все найденные строки по названию упражнения
+const groupedExercises = exercises.groupBy(l => l.type);
+
+// Создаем таблицу
+dv.table(
+    // Заголовки колонок
+    ["Упражнение", "Записей", "Рекордный вес (кг)", "Последний результат", "Дата последней"],
+    // Обрабатываем каждую группу упражнений
+    groupedExercises.map(group => {
+        // Сортируем все записи для текущего упражнения по дате (от новой к старой)
+        const sortedRows = group.rows.sort(r => r.file.day, 'desc');
+        // Берем самую последнюю запись
+        const latest = sortedRows[0];
+        // Находим максимальный вес среди всех записей
+        const recordWeight = Math.max(...group.rows.map(r => r.weight || 0));
+
+        // Возвращаем одну строку для итоговой таблицы
+        return [
+            group.key,
+            group.rows.length,
+            recordWeight,
+            `${latest.weight || '?'} x ${latest.reps || '?'}`,
+            latest.file.day ? latest.file.day.toFormat("yyyy-MM-dd") : "Нет даты"
+        ];
+    })
+);
 ```
 
