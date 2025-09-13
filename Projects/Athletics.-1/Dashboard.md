@@ -39,13 +39,50 @@ TABLE status as "Статус", due as "Срок" FROM #task AND !"Templates" WH
 
 ### Прошедшие тренировки
 
-```dataview
-TABLE testValue
-FROM "Тест.md"
-```
 
+```dataviewjs
+// --- ГЛАВНЫЙ СКРИПТ ПРОГРЕССИИ ---
 
-```dataview
-TABLE testValue
-FROM "Test.md"
+// 1. УКАЖИТЕ ТОЧНЫЙ ПУТЬ К ПАПКЕ С ЖУРНАЛАМИ ТРЕНИРОВОК
+const FOLDER_PATH = "Projects/Athletics.-1/Logs";
+
+const pages = dv.pages(`"${FOLDER_PATH}"`);
+
+if (pages.length === 0) {
+    dv.paragraph(`❌ **Ошибка:** Не найдено ни одного файла в папке \`${FOLDER_PATH}\`. Проверьте путь.`);
+} else {
+    // "Разворачиваем" списки из файлов, ищем строки с полем 'type'
+    const exercises = pages
+        .flatMap(p => p.file.lists)
+        .where(l => l.type); // Используем 'type' как вы хотели
+
+    // Группируем по полю 'type'
+    const groupedExercises = exercises.groupBy(l => l.type);
+
+    // Создаем итоговую таблицу
+    dv.table(
+        ["Упражнение", "Записей", "Рекордный вес (кг)", "Последний результат", "Дата последней"],
+        groupedExercises.map(group => {
+            // Защита от отсутствия даты: сначала фильтруем, потом сортируем
+            const sortedRows = group.rows
+                .filter(r => r.file.date)
+                .sort(r => r.file.date, 'desc');
+
+            if (sortedRows.length === 0) {
+                return [group.key, group.rows.length, "---", "Нет данных со свойством 'date'", "---"];
+            }
+
+            const latest = sortedRows[0];
+            const recordWeight = Math.max(...group.rows.map(r => r.weight || 0));
+
+            return [
+                group.key,
+                group.rows.length,
+                recordWeight,
+                `${latest.weight || '?'} x ${latest.reps || '?'}`,
+                latest.file.date.toFormat("yyyy-MM-dd")
+            ];
+        })
+    );
+}
 ```
