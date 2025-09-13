@@ -40,6 +40,12 @@ TABLE status as "Статус", due as "Срок" FROM #task AND !"Templates" WH
 ### Прошедшие тренировки
 
 ```dataview
-TABLE myValue
+TABLE testValue
 FROM "Тест.md"
+```
+
+
+```dataview
+TABLE testValue
+FROM "Test.md"
 ```
