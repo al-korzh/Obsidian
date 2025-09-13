@@ -5,6 +5,11 @@ processed: false
 areas: "[[Areas/Athletics|Athletics]]"
 ---
 > **Цель:** Создать прочную атлетическую базу, трансформировав тело и подготовив его к будущим высоким нагрузкам.
+
+- **Доска задач:** [[Активные задачи (Kanban)]] 
+- **План тренировок:** [[1. Projects/НАЗВАНИЕ ПАПКИ ПРОЕКТА/План тренировок - Этап 1]] 
+- **Журнал тренировок:** [[1. Projects/НАЗВАНИЕ ПАПКИ ПРОЕКТА/Журнал тренировок/]] 
+- **Аналитика:** [[1. Projects/НАЗВАНИЕ ПАПКИ ПРОЕКТА/Аналитика/]]
 ---
 
 ### KPI
@@ -27,3 +32,7 @@ areas: "[[Areas/Athletics|Athletics]]"
 
 
 ### Задачи
+
+```dataview TABLE status as "Статус", due as "Срок" FROM #task AND !"Templates" WHERE project = this.file.link AND status != "done" SORT due ASC```
+
+
