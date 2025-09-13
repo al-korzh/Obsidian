@@ -88,3 +88,27 @@ if (pages.length === 0) {
     }
 }
 ```
+
+
+```dataviewjs
+// --- Финальный диагностический скрипт ---
+dv.header(3, "Финальный отчет о свойстве 'date' в файлах-тренировках");
+
+const FOLDER_PATH = "Projects/Athletics.-1/Logs";
+const pages = dv.pages(`"${FOLDER_PATH}"`);
+
+if (pages.length === 0) {
+    dv.error("ОШИБКА: Не найдено ни одного файла в папке. Проверьте путь.");
+} else {
+    dv.table(
+        ["Файл", "Свойство 'date' существует и читается?"],
+        pages.map(p => {
+            const dateExists = p.file.date && typeof(p.file.date) === 'object';
+            return [
+                p.file.link,
+                dateExists ? "✅ Да" : "❌ Нет"
+            ];
+        })
+    );
+}
+```
