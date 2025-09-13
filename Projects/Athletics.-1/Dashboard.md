@@ -40,5 +40,15 @@ TABLE status as "Статус", due as "Срок" FROM #task AND !"Templates" WH
 ### Прошедшие тренировки
 
 ```dataview
-TABLE WITHOUT ID file.link as "Тренировка", file.cday as "Дата" FROM "1. Projects/НАЗВАНИЕ ПАПКИ ПРОЕКТА/Журнал тренировок" SORT file.cday DESC LIMIT 5
+TABLE
+    length(rows) as "Записей",
+    max(rows.L.weight) as "Рекордный вес (кг)",
+    sort(rows, r => r.file.day, "desc")[0].L.weight + " x " + sort(rows, r => r.file.day, "desc")[0].L.reps as "Последний результат",
+    sort(rows, r => r.file.day, "desc")[0].file.day as "Дата последней"
+FROM "1. Projects/Athletics.-1/Logs"
+FLATTEN file.lists as L
+WHERE L.type
+GROUP BY L.type as "Упражнение"
+SORT "Упражнение" ASC
 ```
+
