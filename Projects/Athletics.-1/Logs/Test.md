@@ -1,8 +1,5 @@
 ---
-tags:
-  - log
-  - workout
-  - gym
+tags: [log, workout, gym]
 rang-10: 0
 date: 2025-09-13
 ---

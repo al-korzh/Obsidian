@@ -41,31 +41,38 @@ TABLE status as "Статус", due as "Срок" FROM #task AND !"Templates" WH
 
 
 ```dataviewjs
-// --- ПРОСТОЙ И НАДЕЖНЫЙ СКРИПТ ---
-dv.table(
-    // Заголовки
-    ["Упражнение", "Последний результат", "Дата последней"],
+// --- ФИНАЛЬНЫЙ РАБОЧИЙ СКРИПТ ---
+dv.header(3, "Таблица прогрессии");
 
-    // 1. Получаем все строки-упражнения из папки
-    dv.pages('"Projects/Athletics.-1/Logs"')
-        .flatMap(p => p.file.lists)
-        .where(l => l.type && l.file && l.file.date)
+// 1. УКАЖИТЕ ТОЧНЫЙ ПУТЬ К ПАПКЕ С ЖУРНАЛАМИ ТРЕНИРОВОК
+const FOLDER_PATH = "Projects/Athletics.-1/Logs";
 
-    // 2. Группируем их по названию упражнения
-    .groupBy(l => l.type)
+const pages = dv.pages(`"${FOLDER_PATH}"`);
 
-    // 3. Для каждой группы...
-    .map(group => {
-        // 4. ...находим самую последнюю запись, просто сортируя даты как текст
-        // (формат ГГГГ-ММ-ДД идеально подходит для такой сортировки)
-        const latest = group.rows.sort(r => r.file.date, 'desc')[0];
+const exercises = pages
+    .flatMap(p => p.file.lists)
+    .where(l => l.type && l.file && l.file.date); // Фильтр, который теперь заработает
 
-        // 5. ... и возвращаем одну простую строку в таблицу
-        return [
-            group.key,
-            `${latest.weight || '?'} x ${latest.reps || '?'}`,
-            latest.file.date.toString() // Просто выводим дату как текст
-        ];
-    })
-);
+if (exercises.length === 0) {
+    dv.warn("Данные для таблицы не найдены. Проверьте, что в файлах-тренировках есть свойство 'date' и строки с 'type::'.");
+} else {
+    const groupedExercises = exercises.groupBy(l => l.type);
+
+    dv.table(
+        ["Упражнение", "Записей", "Рекордный вес (кг)", "Последний результат", "Дата последней"],
+        groupedExercises.map(group => {
+            const sortedRows = group.rows.sort(r => r.file.date, 'desc');
+            const latest = sortedRows[0];
+            const recordWeight = Math.max(...group.rows.map(r => r.weight || 0));
+
+            return [
+                group.key,
+                group.rows.length,
+                recordWeight,
+                `${latest.weight || '?'} x ${latest.reps || '?'}`,
+                latest.file.date.toFormat("yyyy-MM-dd")
+            ];
+        })
+    );
+}
 ```
