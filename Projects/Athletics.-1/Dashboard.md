@@ -43,6 +43,9 @@ TABLE status as "Статус", due as "Срок" FROM #task AND !"Templates" WH
 // Получаем все данные из логов тренировок
 const pages = dv.pages('"1. Projects/Athletics.-1/Logs"');
 
+if (pages.length === 0) { dv.paragraph(`❌ **Ошибка:** Не найдено ни одного файла в папке \`${FOLDER_PATH}\`. Проверьте путь.`);
+}
+
 // "Разворачиваем" все списки из этих файлов, оставляя только те, где есть поле "type"
 const types = pages
     .flatMap(p => p.file.lists)
