@@ -4,8 +4,11 @@
 
 ```dataview
 TABLE
-item.exercise, item.weight, item.reps, item.sets
-FROM this.file.name
+    item.exercise, 
+    item.weight, 
+    item.reps, 
+    item.sets
+FROM ""
 FLATTEN file.lists as item
 WHERE item.exercise
 ```
