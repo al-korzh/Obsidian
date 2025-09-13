@@ -21,7 +21,7 @@ kanban-plugin: board
 
 ## Archive
 
-- [ ] 2025-09-13 10:10 [[Projects/Untitled/Tasks/Test|Test]]
+- [ ] 2025-09-13 10:10 [[Projects/Athletics/Tasks/Test|Test]]
 
 %% kanban:settings
 ```
