@@ -41,36 +41,44 @@ TABLE status as "Статус", due as "Срок" FROM #task AND !"Templates" WH
 
 
 ```dataviewjs
-// --- ФИНАЛЬНЫЙ РАБОЧИЙ СКРИПТ ---
-dv.header(3, "Таблица прогрессии");
-
+// --- НАСТРОЙКА ---
+// Укажите путь к папке с вашими логами тренировок.
+// Если папка в корне, пишите "Название папки".
+// Если она вложена, пишите "Родитель/Название папки".
 const FOLDER_PATH = "Projects/Athletics.-1/Logs";
+
+// --- КОНЕЦ НАСТРОЙКИ ---
+
+// Находим все страницы в указанной папке с тегом #workout
 const pages = dv.pages(`"${FOLDER_PATH}"`);
 
-const exercises = pages
-    .flatMap(p => p.file.lists)
-    .where(l => l.type && l.file.date);
-
-if (exercises.length === 0) {
-    dv.paragraph("⚠️ **Данные для таблицы не найдены.** Проверьте, что в файлах-тренировках есть свойство 'date' и строки с полем `type::`.");
-} else {
-    const groupedExercises = exercises.groupBy(l => l.type);
-
-    dv.table(
-        ["Упражнение", "Записей", "Рекордный вес (кг)", "Последний результат", "Дата последней"],
-        groupedExercises.map(group => {
-            const sortedRows = group.rows.sort(r => r.file.date, 'desc');
-            const latest = sortedRows[0];
-            const recordWeight = Math.max(...group.rows.map(r => r.weight || 0));
-
-            return [
-                group.key,
-                group.rows.length,
-                recordWeight,
-                `${latest.weight || '?'} x ${latest.reps || '?'}`,
-                latest.file.date.toFormat("yyyy-MM-dd")
-            ];
-        })
+// Извлекаем данные из каждой страницы
+const workoutData = pages.flatMap(page => {
+    // Находим в заметке все элементы списка, у которых есть поля weight, reps и sets
+    const exercises = page.file.lists.where(item => 
+        item.weight && item.reps && item.sets
     );
+dv.paragraph("---")
+dv.paragraph(exercises[0].reps)
+dv.paragraph("---")
+
+    // Для каждого найденного упражнения создаем строку в будущей таблице
+    return exercises.map(exercise => [
+        page.date ? page.date.toFormat("dd.MM.yyyy") : "—", // Дата из YAML
+        exercise.type || exercise.text.split('(')[0].trim(), // Название упражнения
+        exercise.weight, // Вес
+        exercise.reps,    // Повторения
+        exercise.sets     // Подходы
+    ]);
+});
+
+// Если данные найдены, выводим их в виде таблицы
+if (workoutData.length > 0) {
+    dv.table(
+        ["Дата", "Упражнение", "Вес (кг)", "Повторения", "Подходы"],
+        workoutData
+    );
+} else {
+    dv.paragraph("💪 Не найдено данных о тренировках в указанной папке.");
 }
 ```
