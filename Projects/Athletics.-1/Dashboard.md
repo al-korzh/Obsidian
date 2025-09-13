@@ -41,7 +41,7 @@ TABLE status as "Статус", due as "Срок" FROM #task AND !"Templates" WH
 
 
 ```dataviewjs
-// --- ДИАГНОСТИЧЕСКИЙ СКРИПТ: ПОКАЗАТЬ ВСЕ ---
+// --- ИСПРАВЛЕННЫЙ ДИАГНОСТИЧЕСКИЙ СКРИПТ ---
 dv.header(3, "Полный отчет по данным в файлах-тренировках");
 
 const FOLDER_PATH = "Projects/Athletics.-1/Logs";
@@ -50,26 +50,45 @@ const pages = dv.pages(`"${FOLDER_PATH}"`);
 if (pages.length === 0) {
     dv.error("ОШИБКА: Не найдено ни одного файла в папке. Проверьте путь.");
 } else {
-    // Для каждого файла создаем отдельный раздел
+    // Создаем пустую строку, в которую будем собирать весь наш отчет
+    let reportMd = "";
+
+    // Для каждого файла в папке
     for (const page of pages) {
-        // Выводим имя файла как заголовок
-        dv.header(4, page.file.link);
+        // Добавляем в отчет имя файла как заголовок
+        reportMd += `#### ${page.file.link}\n`;
+        reportMd += "**Свойства файла (YAML):**\n";
 
-        // Показываем все свойства из YAML-блока
-        dv.paragraph("**Свойства файла (YAML):**");
-        dv.list(Object.entries(page.file.frontmatter).map(([key, value]) => `${key}: ${value}`));
-
-        // Показываем все строки-списки и их встроенные поля
-        dv.paragraph("**Найденные строки-списки и их поля:**");
-        for (const item of page.file.lists) {
-            // Пропускаем пустые строки
-            if (!item.text) continue;
-
-            // Выводим текст строки
-            dv.listItem(`${item.text}`);
-            // Выводим все найденные в ней поля
-            dv.list(Object.entries(item.values).map(([key, value]) => `> ${key} :: ${value}`));
+        // Добавляем в отчет свойства из YAML-блока
+        const frontmatter = page.file.frontmatter;
+        if (Object.keys(frontmatter).length > 0) {
+            for (const [key, value] of Object.entries(frontmatter)) {
+                reportMd += `- ${key}: ${value}\n`;
+            }
+        } else {
+            reportMd += "- *Свойства не найдены или YAML-блок сломан.*\n";
         }
+
+        reportMd += "\n**Найденные строки-списки и их поля:**\n";
+
+        // Добавляем в отчет строки-списки и их поля
+        const listItems = page.file.lists;
+        if (listItems.length > 0) {
+            for (const item of listItems) {
+                if (!item.text) continue;
+                reportMd += `- ${item.text}\n`; // Текст строки
+                // Выводим вложенным списком все поля, найденные в этой строке
+                for (const [key, value] of Object.entries(item.values)) {
+                    reportMd += `\t- **${key}**: ${value}\n`;
+                }
+            }
+        } else {
+            reportMd += "- *В файле не найдено ни одной строки-списка.*\n";
+        }
+        reportMd += "\n---\n"; // Добавляем разделитель между файлами
     }
+
+    // Выводим весь собранный отчет на экран одной командой
+    dv.markdown(reportMd);
 }
 ```
