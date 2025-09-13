@@ -1,7 +1,6 @@
 ---
 tags:
   - project
-processed: false
 areas: "[[Areas/Athletics|Athletics]]"
 ---
 > **Цель:** Создать прочную атлетическую базу, трансформировав тело и подготовив его к будущим высоким нагрузкам.
@@ -34,10 +33,13 @@ areas: "[[Areas/Athletics|Athletics]]"
 
 ### Задачи
 
-```dataview TABLE status as "Статус", due as "Срок" FROM #task AND !"Templates" WHERE project = this.file.link AND status != "done" SORT due ASC```
+```dataview
+TABLE status as "Статус", due as "Срок" FROM #task AND !"Templates" WHERE project = this.file.link AND status != "done" SORT due ASC
+```
 
 
 ### Прошедшие тренировки
 
-```TABLE WITHOUT ID file.link as "Тренировка", file.cday as "Дата" FROM "1. Projects/НАЗВАНИЕ ПАПКИ ПРОЕКТА/Журнал тренировок" SORT file.cday DESC LIMIT 5
+```dataview
+TABLE WITHOUT ID file.link as "Тренировка", file.cday as "Дата" FROM "1. Projects/НАЗВАНИЕ ПАПКИ ПРОЕКТА/Журнал тренировок" SORT file.cday DESC LIMIT 5
 ```
