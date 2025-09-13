@@ -41,7 +41,7 @@ TABLE status as "Статус", due as "Срок" FROM #task AND !"Templates" WH
 
 
 ```dataviewjs
-// --- ФИНАЛЬНЫЙ РАБОЧИЙ СКРИПТ ---
+// --- Финальная версия с исправлением ошибки ---
 dv.header(3, "Таблица прогрессии");
 
 // 1. УКАЖИТЕ ТОЧНЫЙ ПУТЬ К ПАПКЕ С ЖУРНАЛАМИ ТРЕНИРОВОК
@@ -49,30 +49,35 @@ const FOLDER_PATH = "Projects/Athletics.-1/Logs";
 
 const pages = dv.pages(`"${FOLDER_PATH}"`);
 
-const exercises = pages
-    .flatMap(p => p.file.lists)
-    .where(l => l.type && l.file && l.file.date); // Фильтр, который теперь заработает
-
-if (exercises.length === 0) {
-    dv.warn("Данные для таблицы не найдены. Проверьте, что в файлах-тренировках есть свойство 'date' и строки с 'type::'.");
+if (pages.length === 0) {
+    dv.error("ОШИБКА: Не найдено ни одного файла в папке. Проверьте путь.");
 } else {
-    const groupedExercises = exercises.groupBy(l => l.type);
+    const exercises = pages
+        .flatMap(p => p.file.lists)
+        .where(l => l.type && l.file && l.file.date);
 
-    dv.table(
-        ["Упражнение", "Записей", "Рекордный вес (кг)", "Последний результат", "Дата последней"],
-        groupedExercises.map(group => {
-            const sortedRows = group.rows.sort(r => r.file.date, 'desc');
-            const latest = sortedRows[0];
-            const recordWeight = Math.max(...group.rows.map(r => r.weight || 0));
+    if (exercises.length === 0) {
+        // ИСПРАВЛЕНИЕ ЗДЕСЬ: Заменили dv.warn на dv.paragraph
+        dv.paragraph("⚠️ **Данные для таблицы не найдены.** Проверьте, что в файлах-тренировках есть свойство 'date' и строки с полем `type::`.");
+    } else {
+        const groupedExercises = exercises.groupBy(l => l.type);
 
-            return [
-                group.key,
-                group.rows.length,
-                recordWeight,
-                `${latest.weight || '?'} x ${latest.reps || '?'}`,
-                latest.file.date.toFormat("yyyy-MM-dd")
-            ];
-        })
-    );
+        dv.table(
+            ["Упражнение", "Записей", "Рекордный вес (кг)", "Последний результат", "Дата последней"],
+            groupedExercises.map(group => {
+                const sortedRows = group.rows.sort(r => r.file.date, 'desc');
+                const latest = sortedRows[0];
+                const recordWeight = Math.max(...group.rows.map(r => r.weight || 0));
+
+                return [
+                    group.key,
+                    group.rows.length,
+                    recordWeight,
+                    `${latest.weight || '?'} x ${latest.reps || '?'}`,
+                    latest.file.date.toFormat("yyyy-MM-dd")
+                ];
+            })
+        );
+    }
 }
 ```
