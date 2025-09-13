@@ -82,3 +82,38 @@ dv.table(
 );
 ```
 
+```dataviewjs
+// --- ДИАГНОСТИЧЕСКИЙ СКРИПТ ---
+dv.header(3, "Отчет о свойстве 'date' в файлах-тренировках");
+
+const FOLDER_PATH = "Projects/Athletics.-1/Logs";
+const pages = dv.pages(`"${FOLDER_PATH}"`);
+
+if (pages.length === 0) {
+    dv.error("ОШИБКА: Не найдено ни одного файла в указанной папке. Проверьте путь в переменной FOLDER_PATH.");
+} else {
+    dv.table(
+        ["Файл", "Свойство 'date' существует?", "Тип данных 'date'", "Значение 'date'"],
+        pages.map(p => {
+            // Проверяем, существует ли свойство 'date' и не является ли оно пустым
+            const dateExists = p.file.date !== null && p.file.date !== undefined;
+            // Получаем тип данных этого свойства
+            const dateType = typeof(p.file.date);
+            // Пытаемся безопасно прочитать и отформатировать дату
+            let dateValue = "---";
+            if (dateExists && typeof(p.file.date) === 'object') {
+                dateValue = p.file.date.toFormat("yyyy-MM-dd");
+            } else if (dateExists) {
+                dateValue = p.file.date.toString();
+            }
+
+            return [
+                p.file.link,
+                dateExists ? "✅ Да" : "❌ Нет",
+                dateExists ? dateType : "---",
+                dateValue
+            ];
+        })
+    );
+}
+```
