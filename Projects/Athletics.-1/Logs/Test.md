@@ -6,6 +6,6 @@ date: 2025-09-13
 
 ##### Results
 
-- Жим лежа (type:: Жим лежа, weight:: 80, reps:: 8, sets:: 4)
+- Жим лежа (type:: "Жим лежа", weight:: 80, reps:: 8, sets:: 4)
 
 ---

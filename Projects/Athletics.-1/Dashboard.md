@@ -85,7 +85,7 @@ const workoutData = pages.flatMap(page => {
         exercise.sets
     ]);
 });
-
+clear
 
 // Финальный вывод таблицы (не меняем)
 if (workoutData.length > 0) {
