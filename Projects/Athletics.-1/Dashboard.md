@@ -49,14 +49,14 @@ const types = pages
     .where(l => l.type);
 
 // Группируем все найденные строки по названию упражнения
-const groupedExercises = exercises.groupBy(l => l.type);
+const groupedTypes = types.groupBy(l => l.type);
 
 // Создаем таблицу
 dv.table(
     // Заголовки колонок
     ["Упражнение", "Записей", "Рекордный вес (кг)", "Последний результат", "Дата последней"],
     // Обрабатываем каждую группу упражнений
-    groupedExercises.map(group => {
+    groupedTypes.map(group => {
         // Сортируем все записи для текущего упражнения по дате (от новой к старой)
         const sortedRows = group.rows.sort(r => r.file.day, 'desc');
         // Берем самую последнюю запись
