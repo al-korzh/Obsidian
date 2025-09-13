@@ -1,18 +1,14 @@
 ---
-tags: log, training
-rang: 0/10
+tags:
+  - log
+  - workout
+  - gym
+rang-10: 0
 date: <% tp.date.now("YYYY-MM-DD") %>
 ---
 
-*Пример записи для автоматического трекинга:*
-- Жим лежа (exercise:: Жим лежа, weight:: 80, reps:: 8, sets:: 4)
+##### Results
 
-*Ваши упражнения:*
-- 
-- 
-- 
+- Жим лежа (type:: Жим лежа, weight:: 80, reps:: 8, sets:: 4)
 
 ---
-#### Комментарии и ощущения
-
--
