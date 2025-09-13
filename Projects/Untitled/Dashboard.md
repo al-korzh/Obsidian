@@ -36,3 +36,10 @@ areas: "[[Areas/Athletics|Athletics]]"
 ```dataview TABLE status as "Статус", due as "Срок" FROM #task AND !"Templates" WHERE project = this.file.link AND status != "done" SORT due ASC```
 
 
+### Расписание тренировок
+
+
+### Прошедшие тренировки
+
+```TABLE WITHOUT ID file.link as "Тренировка", file.cday as "Дата" FROM "1. Projects/НАЗВАНИЕ ПАПКИ ПРОЕКТА/Журнал тренировок" SORT file.cday DESC LIMIT 5
+```
