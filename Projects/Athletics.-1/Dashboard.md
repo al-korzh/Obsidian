@@ -41,74 +41,31 @@ TABLE status as "Статус", due as "Срок" FROM #task AND !"Templates" WH
 
 
 ```dataviewjs
-// --- ФИНАЛЬНАЯ НАДЕЖНАЯ ВЕРСИЯ ---
+// --- ПРОСТОЙ И НАДЕЖНЫЙ СКРИПТ ---
+dv.table(
+    // Заголовки
+    ["Упражнение", "Последний результат", "Дата последней"],
 
-// 1. Укажите точный путь к папке
-const FOLDER_PATH = "Projects/Athletics.-1/Logs";
-const pages = dv.pages(`"${FOLDER_PATH}"`);
-
-if (pages.length === 0) {
-    dv.paragraph("ℹ️ В папке для логов пока нет ни одного файла.");
-} else {
-    const exercises = pages
+    // 1. Получаем все строки-упражнения из папки
+    dv.pages('"Projects/Athletics.-1/Logs"')
         .flatMap(p => p.file.lists)
-        .where(l => l.type);
+        .where(l => l.type && l.file && l.file.date)
 
-    if (exercises.length === 0) {
-        dv.warn("ПРЕДУПРЕЖДЕНИЕ: Файлы в папке есть, но в них не найдено ни одной строки с полем `type::`.");
-    } else {
-        const groupedExercises = exercises.groupBy(l => l.type);
+    // 2. Группируем их по названию упражнения
+    .groupBy(l => l.type)
 
-        dv.table(
-            ["Упражнение", "Записей", "Рекордный вес (кг)", "Последний результат", "Дата последней"],
-            groupedExercises.map(group => {
-                // САМОЕ ВАЖНОЕ ИЗМЕНЕНИЕ:
-                // Сначала отбираем только те записи, где ТОЧНО есть и файл, и дата
-                const validRows = group.rows.filter(r => r.file && r.file.date);
+    // 3. Для каждой группы...
+    .map(group => {
+        // 4. ...находим самую последнюю запись, просто сортируя даты как текст
+        // (формат ГГГГ-ММ-ДД идеально подходит для такой сортировки)
+        const latest = group.rows.sort(r => r.file.date, 'desc')[0];
 
-                // Если для этого упражнения ВООБЩЕ нет записей с валидной датой
-                if (validRows.length === 0) {
-                    return [group.key, group.rows.length, "---", "Нет данных с валидной датой", "---"];
-                }
-
-                // Сортируем только валидные записи
-                const sortedRows = validRows.sort(r => r.file.date, 'desc');
-                const latest = sortedRows[0];
-                const recordWeight = Math.max(...group.rows.map(r => r.weight || 0));
-
-                return [
-                    group.key,
-                    group.rows.length,
-                    recordWeight,
-                    `${latest.weight || '?'} x ${latest.reps || '?'}`,
-                    latest.file.date.toFormat("yyyy-MM-dd")
-                ];
-            })
-        );
-    }
-}
-```
-
-
-```dataviewjs
-// --- Финальный диагностический скрипт ---
-dv.header(3, "Финальный отчет о свойстве 'date' в файлах-тренировках");
-
-const FOLDER_PATH = "Projects/Athletics.-1/Logs";
-const pages = dv.pages(`"${FOLDER_PATH}"`);
-
-if (pages.length === 0) {
-    dv.error("ОШИБКА: Не найдено ни одного файла в папке. Проверьте путь.");
-} else {
-    dv.table(
-        ["Файл", "Свойство 'date' существует и читается?"],
-        pages.map(p => {
-            const dateExists = p.file.date && typeof(p.file.date) === 'object';
-            return [
-                p.file.link,
-                dateExists ? "✅ Да" : "❌ Нет"
-            ];
-        })
-    );
-}
+        // 5. ... и возвращаем одну простую строку в таблицу
+        return [
+            group.key,
+            `${latest.weight || '?'} x ${latest.reps || '?'}`,
+            latest.file.date.toString() // Просто выводим дату как текст
+        ];
+    })
+);
 ```
