@@ -6,6 +6,7 @@ kanban-plugin: board
 
 ## Backlog
 
+- [ ] [[Projects/Untitled/Tasks|Test]]
 
 
 ## In progress
