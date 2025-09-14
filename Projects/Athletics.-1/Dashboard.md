@@ -117,9 +117,6 @@ const workoutData = pages.flatMap(page => {
     ]);
 });
 
-// 3. Сортируем все записи по дате (от новой к старой)
-workoutData.sort((a, b) => b[0].localeCompare(a[0]));
-
 // 4. Выводим таблицу
 if (workoutData.length > 0) {
     dv.table(
