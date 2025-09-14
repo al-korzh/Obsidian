@@ -79,7 +79,7 @@ const workoutData = pages.flatMap(page => {
     // Возвращаем результат для таблицы (оригинальный код)
     return exercises.map(exercise => [
         page.date ? page.date.toFormat("dd.MM.yyyy") : "—",
-        exercise.type || exercise.text.split('(')[0].trim(),
+        exercise.type,
         exercise.weight,
         exercise.reps,
         exercise.sets
