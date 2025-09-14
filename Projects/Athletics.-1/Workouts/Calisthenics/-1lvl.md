@@ -1,0 +1,77 @@
+
+Repeats #1: 3 Repeats #2: 4 Repeats #3: 3 Repeats #4: 1 Repeats #5: 1
+
+  
+
+- 1x Pull-ups:
+    
+
+  
+
+1. Help with
+    
+2. Help with
+    
+3. Help with
+    
+4. Negative
+    
+5. Hold
+    
+
+  
+
+- 2x Push-ups:
+    
+
+  
+
+1. Knee
+    
+2. Knee
+    
+3. Knee
+    
+4. Wall
+    
+5. Plank hand
+    
+
+  
+
+- 4x Squats:
+    
+
+  
+
+1. From chair
+    
+2. From chair
+    
+3. From chair
+    
+4. Standard
+    
+5. Hold chair
+    
+
+  
+
+- 4x ABS:
+    
+
+  
+
+1. Side
+    
+2. Lower + Hyperextension
+    
+3. Twisting + Hyperextension
+    
+4. Lower + Hyperextension
+    
+5. Side
+    
+
+  
+**
