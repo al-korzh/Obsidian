@@ -117,6 +117,10 @@ const workoutData = pages.flatMap(page => {
     ]);
 });
 
+console.log(workoutData)
+
+workoutData.sort((a, b) => b[0].localeCompare(a[0]));
+
 // 4. Выводим таблицу
 if (workoutData.length > 0) {
     dv.table(
