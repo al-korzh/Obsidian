@@ -40,48 +40,45 @@ TABLE status as "Статус", due as "Срок" FROM #task AND !"Templates" WH
 ### Прошедшие тренировки
 
 
+
+<div style="max-height: 500px; overflow-y: auto;">
+
 ```dataviewjs
+// --- НАСТРОЙКИ ---
 const FOLDER_PATH = "Projects/Athletics.-1/Logs";
 const REQUIRED_TAG = "#gym";
+// --- КОНЕЦ НАСТРОЕК ---
 
+// 1. Находим все страницы
 const pages = dv.pages(`"${FOLDER_PATH}" AND ${REQUIRED_TAG}`);
 
-const allExercises = pages.flatMap(page => {
+// 2. Собираем все упражнения в один массив
+const workoutData = pages.flatMap(page => {
     if (!page.date) return [];
     const exercises = page.file.lists
         .where(item => item.type && item.weight && item.reps && item.sets);
-    return exercises.map(ex => ({
-        date: page.date.toFormat("yyyy-MM-dd"),
-        name: ex.type,
-        result: `${ex.weight} x ${ex.reps} x ${ex.sets}`
-    }));
+    return exercises.map(ex => [
+        page.date.toFormat("yyyy-MM-dd"),
+        ex.type,
+        ex.weight,
+        ex.reps,
+        ex.sets
+    ]);
 });
 
-const exerciseData = {};
-const allDates = new Set();
+// 3. Сортируем все записи по дате (от новой к старой)
+workoutData.sort((a, b) => b[0].localeCompare(a[0]));
 
-allExercises.forEach(ex => {
-    if (!exerciseData[ex.name]) {
-        exerciseData[ex.name] = {};
-    }
-    exerciseData[ex.name][ex.date] = ex.result;
-    allDates.add(ex.date);
-});
-
-const sortedDates = Array.from(allDates).sort();
-const headers = ["Упражнение", ...sortedDates];
-
-const rows = Object.keys(exerciseData).sort().map(exerciseName => {
-    const row = [exerciseName];
-    sortedDates.forEach(date => {
-        row.push(exerciseData[exerciseName][date] || "—");
-    });
-    return row;
-});
-
-if (rows.length > 0) {
-    dv.table(headers, rows);
+// 4. Выводим таблицу
+if (workoutData.length > 0) {
+    dv.table(
+        ["Дата", "Упражнение", "Вес (кг)", "Повторения", "Подходы"],
+        workoutData
+    );
 } else {
     dv.paragraph("💪 Не найдено данных с тегом #gym в указанной папке.");
 }
 ```
+</div>
+
+
