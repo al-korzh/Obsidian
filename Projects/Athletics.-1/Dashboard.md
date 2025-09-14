@@ -49,73 +49,39 @@ const REQUIRED_TAG = "#gym";
 // 1. Находим все страницы в папке с нужным тегом
 const pages = dv.pages(`"${FOLDER_PATH}" AND ${REQUIRED_TAG}`);
 
-// 2. Собираем все упражнения в один массив, сохраняя все детали
-const allExercises = pages.flatMap(page => {
+// 2. Собираем все упражнения из всех заметок в один большой массив
+const workoutData = pages.flatMap(page => {
+    // Убеждаемся, что у страницы есть дата
     if (!page.date) return [];
 
+    // Находим все строки-упражнения
     const exercises = page.file.lists
         .where(item => item.type && item.weight && item.reps && item.sets);
         
-    return exercises.map(ex => ({
-        date: page.date.toFormat("yyyy-MM-dd"),
-        name: ex.type,
-        details: { // Сохраняем все поля как объект
-            weight: ex.weight,
-            reps: ex.reps,
-            sets: ex.sets
-        }
-    }));
+    // Для каждого упражнения создаем одну строку в будущей таблице
+    return exercises.map(ex => [
+        page.date.toFormat("yyyy-MM-dd"), // 1. Дата
+        ex.type,                          // 2. Упражнение
+        ex.weight,                        // 3. Вес
+        ex.reps,                          // 4. Повторения
+        ex.sets                           // 5. Подходы
+    ]);
 });
 
-// 3. Группируем данные по названию упражнения
-const exerciseData = {};
-const allDates = new Set(); 
-
-allExercises.forEach(ex => {
-    if (!exerciseData[ex.name]) {
-        exerciseData[ex.name] = {};
-    }
-    // В ячейку [Упражнение][Дата] кладем объект с деталями
-    exerciseData[ex.name][ex.date] = ex.details;
-    allDates.add(ex.date);
+// 3. Сортируем все записи по дате (от новой к старой)
+workoutData.sort((a, b) => {
+    // Сравниваем даты (первый элемент в каждой строке)
+    if (a[0] < b[0]) return 1;
+    if (a[0] > b[0]) return -1;
+    return 0;
 });
 
-// 4. Готовим заголовки и данные для финальной таблицы
-const sortedDates = Array.from(allDates).sort();
-
-// Создаем мульти-колонки для заголовков
-const headers = ["Упражнение"];
-sortedDates.forEach(date => {
-    // Для каждой даты добавляем три заголовка
-    headers.push(`${date} (Вес)`);
-    headers.push(`${date} (Повт)`);
-    headers.push(`${date} (Подх)`);
-});
-
-// Создаем строки для таблицы
-const rows = Object.keys(exerciseData).sort().map(exerciseName => {
-    const row = [exerciseName]; 
-    // Проходим по всем датам в том же порядке, что и в заголовках
-    sortedDates.forEach(date => {
-        const data = exerciseData[exerciseName][date];
-        if (data) {
-            // Если для этой даты есть результат - добавляем все три значения
-            row.push(data.weight);
-            row.push(data.reps);
-            row.push(data.sets);
-        } else {
-            // Если нет - ставим три прочерка
-            row.push("—");
-            row.push("—");
-            row.push("—");
-        }
-    });
-    return row;
-});
-
-// 5. Выводим таблицу
-if (rows.length > 0) {
-    dv.table(headers, rows);
+// 4. Выводим простую таблицу
+if (workoutData.length > 0) {
+    dv.table(
+        ["Дата", "Упражнение", "Вес (кг)", "Повторения", "Подходы"],
+        workoutData
+    );
 } else {
     dv.paragraph("💪 Не найдено данных с тегом #gym в указанной папке.");
 }
