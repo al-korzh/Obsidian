@@ -91,7 +91,6 @@ if (rows.length > 0) {
 // --- НАСТРОЙКИ ---
 const FOLDER_PATH = "Projects/Athletics.-1/Logs";
 const REQUIRED_TAG = "#gym";
-// --- КОНЕЦ НАСТРОЕК ---
 
 // 1. Находим все страницы
 const pages = dv.pages(`"${FOLDER_PATH}" AND ${REQUIRED_TAG}`);
@@ -115,10 +114,10 @@ const workoutData = pages.flatMap(page => {
         ex.reps,                          // Повторения
         ex.sets                           // Подходы
     ]);
-});
+}).values;
 
-console.log(workoutData)
-workoutData.reverse();
+// 3. Сортируем по убыванию
+workoutData.sort((a, b) => b[0].localeCompare(a[0]));
 
 // 4. Выводим таблицу
 if (workoutData.length > 0) {
