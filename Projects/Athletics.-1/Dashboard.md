@@ -49,52 +49,66 @@ const REQUIRED_TAG = "#gym";
 // 1. Находим все страницы в папке с нужным тегом
 const pages = dv.pages(`"${FOLDER_PATH}" AND ${REQUIRED_TAG}`);
 
-// 2. Собираем все-все упражнения из всех заметок в один большой массив
+// 2. Собираем все упражнения в один массив, сохраняя все детали
 const allExercises = pages.flatMap(page => {
-    // Убеждаемся, что у страницы есть дата
     if (!page.date) return [];
 
     const exercises = page.file.lists
         .where(item => item.type && item.weight && item.reps && item.sets);
         
     return exercises.map(ex => ({
-        date: page.date.toFormat("yyyy-MM-dd"), // Стандартизируем формат даты
+        date: page.date.toFormat("yyyy-MM-dd"),
         name: ex.type,
-        // Собираем результат в удобную строку "Вес x Повторения x Подходы"
-        result: `${ex.weight} x ${ex.reps} x ${ex.sets}`
+        details: { // Сохраняем все поля как объект
+            weight: ex.weight,
+            reps: ex.reps,
+            sets: ex.sets
+        }
     }));
 });
 
-// 3. Создаем структуру для сводной таблицы
-// Группируем все результаты по названию упражнения
+// 3. Группируем данные по названию упражнения
 const exerciseData = {};
-const allDates = new Set(); // Используем Set для автоматического сбора уникальных дат
+const allDates = new Set(); 
 
 allExercises.forEach(ex => {
-    // Если упражнение встретилось впервые, создаем для него запись
     if (!exerciseData[ex.name]) {
         exerciseData[ex.name] = {};
     }
-    // Записываем результат в ячейку [Упражнение][Дата]
-    exerciseData[ex.name][ex.date] = ex.result;
-    // Добавляем дату в общий список
+    // В ячейку [Упражнение][Дата] кладем объект с деталями
+    exerciseData[ex.name][ex.date] = ex.details;
     allDates.add(ex.date);
 });
 
 // 4. Готовим заголовки и данные для финальной таблицы
-// Сортируем даты по возрастанию (самая старая слева, самая новая справа)
 const sortedDates = Array.from(allDates).sort();
 
-// Создаем заголовки для колонок: "Упражнение" и все отсортированные даты
-const headers = ["Упражнение", ...sortedDates];
+// Создаем мульти-колонки для заголовков
+const headers = ["Упражнение"];
+sortedDates.forEach(date => {
+    // Для каждой даты добавляем три заголовка
+    headers.push(`${date} (Вес)`);
+    headers.push(`${date} (Повт)`);
+    headers.push(`${date} (Подх)`);
+});
 
 // Создаем строки для таблицы
 const rows = Object.keys(exerciseData).sort().map(exerciseName => {
-    const row = [exerciseName]; // Первая ячейка в строке - название упражнения
+    const row = [exerciseName]; 
     // Проходим по всем датам в том же порядке, что и в заголовках
     sortedDates.forEach(date => {
-        // Если для этой даты есть результат - добавляем его. Если нет - ставим прочерк.
-        row.push(exerciseData[exerciseName][date] || "—");
+        const data = exerciseData[exerciseName][date];
+        if (data) {
+            // Если для этой даты есть результат - добавляем все три значения
+            row.push(data.weight);
+            row.push(data.reps);
+            row.push(data.sets);
+        } else {
+            // Если нет - ставим три прочерка
+            row.push("—");
+            row.push("—");
+            row.push("—");
+        }
     });
     return row;
 });
