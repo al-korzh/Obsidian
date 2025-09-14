@@ -39,13 +39,11 @@ TABLE status as "Статус", due as "Срок" FROM #task AND !"Templates" WH
 
 ### Прошедшие тренировки
 
-
-<div style="max-height: 50px; overflow-y: auto;">
-
 ```dataviewjs
 // --- НАСТРОЙКИ ---
 const FOLDER_PATH = "Projects/Athletics.-1/Logs";
 const REQUIRED_TAG = "#gym";
+dv.container.className = 'dataview-scrollable-container';
 
 // 1. Находим все страницы
 const pages = dv.pages(`"${FOLDER_PATH}" AND ${REQUIRED_TAG}`);
@@ -81,7 +79,6 @@ if (workoutData.length > 0) {
         workoutData
     );
 } else {
-    dv.paragraph("💪 Не найдено данных с тегом #gym в указанной папке.");
+    dv.paragraph("Не найдено данных с тегом #gym в указанной папке.");
 }
 ```
-</div>
