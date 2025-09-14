@@ -41,47 +41,46 @@ TABLE status as "Статус", due as "Срок" FROM #task AND !"Templates" WH
 
 
 ```dataviewjs
-// --- НАСТРОЙКИ ---
 const FOLDER_PATH = "Projects/Athletics.-1/Logs";
 const REQUIRED_TAG = "#gym";
-// --- КОНЕЦ НАСТРОЕК ---
 
-// 1. Находим все страницы в папке с нужным тегом
 const pages = dv.pages(`"${FOLDER_PATH}" AND ${REQUIRED_TAG}`);
 
-// 2. Собираем все упражнения из всех заметок в один большой массив
-const workoutData = pages.flatMap(page => {
-    // Убеждаемся, что у страницы есть дата
+const allExercises = pages.flatMap(page => {
     if (!page.date) return [];
-
-    // Находим все строки-упражнения
     const exercises = page.file.lists
         .where(item => item.type && item.weight && item.reps && item.sets);
-        
-    // Для каждого упражнения создаем одну строку в будущей таблице
-    return exercises.map(ex => [
-        page.date.toFormat("yyyy-MM-dd"), // 1. Дата
-        ex.type,                          // 2. Упражнение
-        ex.weight,                        // 3. Вес
-        ex.reps,                          // 4. Повторения
-        ex.sets                           // 5. Подходы
-    ]);
+    return exercises.map(ex => ({
+        date: page.date.toFormat("yyyy-MM-dd"),
+        name: ex.type,
+        result: `${ex.weight} x ${ex.reps} x ${ex.sets}`
+    }));
 });
 
-// 3. Сортируем все записи по дате (от новой к старой)
-workoutData.sort((a, b) => {
-    // Сравниваем даты (первый элемент в каждой строке)
-    if (a[0] < b[0]) return 1;
-    if (a[0] > b[0]) return -1;
-    return 0;
+const exerciseData = {};
+const allDates = new Set();
+
+allExercises.forEach(ex => {
+    if (!exerciseData[ex.name]) {
+        exerciseData[ex.name] = {};
+    }
+    exerciseData[ex.name][ex.date] = ex.result;
+    allDates.add(ex.date);
 });
 
-// 4. Выводим простую таблицу
-if (workoutData.length > 0) {
-    dv.table(
-        ["Дата", "Упражнение", "Вес (кг)", "Повторения", "Подходы"],
-        workoutData
-    );
+const sortedDates = Array.from(allDates).sort();
+const headers = ["Упражнение", ...sortedDates];
+
+const rows = Object.keys(exerciseData).sort().map(exerciseName => {
+    const row = [exerciseName];
+    sortedDates.forEach(date => {
+        row.push(exerciseData[exerciseName][date] || "—");
+    });
+    return row;
+});
+
+if (rows.length > 0) {
+    dv.table(headers, rows);
 } else {
     dv.paragraph("💪 Не найдено данных с тегом #gym в указанной папке.");
 }
