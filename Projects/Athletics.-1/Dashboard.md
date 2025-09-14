@@ -40,52 +40,7 @@ TABLE status as "Статус", due as "Срок" FROM #task AND !"Templates" WH
 ### Прошедшие тренировки
 
 
-```dataviewjs
-const FOLDER_PATH = "Projects/Athletics.-1/Logs";
-const REQUIRED_TAG = "#gym";
-
-const pages = dv.pages(`"${FOLDER_PATH}" AND ${REQUIRED_TAG}`);
-
-const allExercises = pages.flatMap(page => {
-    if (!page.date) return [];
-    const exercises = page.file.lists
-        .where(item => item.type && item.weight && item.reps && item.sets);
-    return exercises.map(ex => ({
-        date: page.date.toFormat("yyyy-MM-dd"),
-        name: ex.type,
-        result: `${ex.weight} x ${ex.reps} x ${ex.sets}`
-    }));
-});
-
-const exerciseData = {};
-const allDates = new Set();
-
-allExercises.forEach(ex => {
-    if (!exerciseData[ex.name]) {
-        exerciseData[ex.name] = {};
-    }
-    exerciseData[ex.name][ex.date] = ex.result;
-    allDates.add(ex.date);
-});
-
-const sortedDates = Array.from(allDates).sort();
-const headers = ["Упражнение", ...sortedDates];
-
-const rows = Object.keys(exerciseData).sort().map(exerciseName => {
-    const row = [exerciseName];
-    sortedDates.forEach(date => {
-        row.push(exerciseData[exerciseName][date] || "—");
-    });
-    return row;
-});
-
-if (rows.length > 0) {
-    dv.table(headers, rows);
-} else {
-    dv.paragraph("💪 Не найдено данных с тегом #gym в указанной папке.");
-}
-```
-
+<div style="max-height: 50px; overflow-y: auto;">
 
 ```dataviewjs
 // --- НАСТРОЙКИ ---
@@ -128,3 +83,5 @@ if (workoutData.length > 0) {
 } else {
     dv.paragraph("💪 Не найдено данных с тегом #gym в указанной папке.");
 }
+```
+</div>
