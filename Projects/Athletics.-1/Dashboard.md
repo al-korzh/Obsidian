@@ -118,8 +118,7 @@ const workoutData = pages.flatMap(page => {
 });
 
 console.log(workoutData)
-
-workoutData.sort((a, b) => (b[0] < a[0] ? 1 : -1));
+workoutData.reverse();
 
 // 4. Выводим таблицу
 if (workoutData.length > 0) {
