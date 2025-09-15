@@ -19,7 +19,6 @@
 	F.lag(F.col("avg_visit_duration") / F.col("page_depth"), 1).over(w)
 	```
 * `time_to_show`: 
-	Время до просмотро. Гипотетически это  минус время реквеста
 	```python
 	F.col("time_show") = F.expr(f"""  
 	    aggregate(        zip_with(event_type, event_time, (t, ts) -> IF(t IN ({','.join(["3", "5"])}), ts, null)),  
@@ -30,7 +29,7 @@
 	    F.unix_timestamp("time_show") - F.unix_timestamp(F.to_timestamp("event_time", "yyyy-MM-dd HH:mm:ss")) 
 	)
 	```
-	* `time_show_to_view`:
+* `time_show_to_view`:
 	```python
 	F.col("time_view") = F.expr(f"""  
 	    aggregate(        zip_with(event_type, event_time, (t, ts) -> IF(t IN ({','.join(["172", "173", "10"])}), ts, null)),  
@@ -41,9 +40,9 @@
 	    F.unix_timestamp("time_view") - F.unix_timestamp("time_show")  
 	),
 	```
-	* Для метрик (`ctr`, `viewability`, `vtr`, `imp_mldata_user_ctr`, `imp_mldata_user_vr`, `imp_mldata_user_vtr`) создаем:
-		* `{metric}_is_zero`: 1 если значение равно 0, иначе 0. Пропуски остаются пропусками.
-		* `{metric}_is_high`: 1 если значение > 5, иначе 0. Пропуски остаются пропусками.
+* Для метрик (`ctr`, `viewability`, `vtr`, `imp_mldata_user_ctr`, `imp_mldata_user_vr`, `imp_mldata_user_vtr`) создаются:
+	* `{metric}_is_zero`: 1 если значение равно 0, иначе 0. Пропуски остаются пропусками.
+	* `{metric}_is_high`: 1 если значение > 5, иначе 0. Пропуски остаются пропусками.
 
 ##### Предагрегация
 В процессе этого шага формируются предварительные срезы данных для каждой сущности, что используются для вычисления конечных статистик.
