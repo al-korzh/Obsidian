@@ -17,6 +17,6 @@
 	2. `daily_min_ts`: минимальный timestamp.
 	3. `daily_max_ts`: максимальный timestamp.
 	4. `daily_sum_{metric}`: сумма значений метрики.
-	5. `daily_count_{metric}`: количество значений метрики.
+	5. `daily_count_{metric}`: количество НЕ-NULL значений метрики.
 	6. `daily_sum_sq_{metric}`: сумма квадратов значений метрики.
 	7. `daily_distincts_{metric}`: 
