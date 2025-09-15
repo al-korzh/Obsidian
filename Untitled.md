@@ -6,7 +6,6 @@
 * `host` (site_domain ИЛИ app_bundle)
 
 
-### Логика
 ##### Формирование дополнительных признаков
 Для некоторых статистик нужно будет сперва ля ля
 
@@ -96,4 +95,95 @@ sum("daily_max_is_evening").over(w)
   size(array_distinct(flatten(collect_set(f"daily_distincts_{entity}").over(w))))
   ```
 
-##### 
+##### Итоговый список признаков
+
+|   |   |   |
+|---|---|---|
+|Имя итогового признака|Промежуточный признак|Финальный расчет|
+|avg_visit_duration_avg_7d|avg_visit_duration (для user_id)|_avg_7d от промежуточного признака|
+|avg_visit_duration_stddev_7d|avg_visit_duration (для user_id)|_stddev_7d от промежуточного признака|
+|page_depth_avg_7d|page_depth (для user_id)|_avg_7d от промежуточного признака|
+|page_depth_stddev_7d|page_depth (для user_id)|_stddev_7d от промежуточного признака|
+|avg_duration_per_page_avg_7d|avg_duration_per_page (для user_id)|_avg_7d от промежуточного признака|
+|avg_duration_per_page_stddev_7d|avg_duration_per_page (для user_id)|_stddev_7d от промежуточного признака|
+|time_to_show_avg_7d|time_to_show (для user_id)|_avg_7d от промежуточного признака|
+|time_to_show_stddev_7d|time_to_show (для user_id)|_stddev_7d от промежуточного признака|
+|time_show_to_view_avg_7d|time_show_to_view (для user_id)|_avg_7d от промежуточного признака|
+|time_show_to_view_stddev_7d|time_show_to_view (для user_id)|_stddev_7d от промежуточного признака|
+|imp_mldata_user_ctr_avg_7d|imp_mldata_user_ctr (для user_id)|_avg_7d от промежуточного признака|
+|imp_mldata_user_ctr_stddev_7d|imp_mldata_user_ctr (для user_id)|_stddev_7d от промежуточного признака|
+|imp_mldata_user_vr_avg_7d|imp_mldata_user_vr (для user_id)|_avg_7d от промежуточного признака|
+|imp_mldata_user_vr_stddev_7d|imp_mldata_user_vr (для user_id)|_stddev_7d от промежуточного признака|
+|imp_mldata_user_vtr_avg_7d|imp_mldata_user_vtr (для user_id)|_avg_7d от промежуточного признака|
+|imp_mldata_user_vtr_stddev_7d|imp_mldata_user_vtr (для user_id)|_stddev_7d от промежуточного признака|
+|avg_visit_duration_avg_28d|avg_visit_duration (для user_id)|_avg_28d от промежуточного признака|
+|avg_visit_duration_stddev_28d|avg_visit_duration (для user_id)|_stddev_28d от промежуточного признака|
+|page_depth_avg_28d|page_depth (для user_id)|_avg_28d от промежуточного признака|
+|page_depth_stddev_28d|page_depth (для user_id)|_stddev_28d от промежуточного признака|
+|avg_duration_per_page_avg_28d|avg_duration_per_page (для user_id)|_avg_28d от промежуточного признака|
+|avg_duration_per_page_stddev_28d|avg_duration_per_page (для user_id)|_stddev_28d от промежуточного признака|
+|time_to_show_avg_28d|time_to_show (для user_id)|_avg_28d от промежуточного признака|
+|time_to_show_stddev_28d|time_to_show (для user_id)|_stddev_28d от промежуточного признака|
+|time_show_to_view_avg_28d|time_show_to_view (для user_id)|_avg_28d от промежуточного признака|
+|time_show_to_view_stddev_28d|time_show_to_view (для user_id)|_stddev_28d от промежуточного признака|
+|imp_mldata_user_ctr_avg_28d|imp_mldata_user_ctr (для user_id)|_avg_28d от промежуточного признака|
+|imp_mldata_user_ctr_stddev_28d|imp_mldata_user_ctr (для user_id)|_stddev_28d от промежуточного признака|
+|imp_mldata_user_vr_avg_28d|imp_mldata_user_vr (для user_id)|_avg_28d от промежуточного признака|
+|imp_mldata_user_vr_stddev_28d|imp_mldata_user_vr (для user_id)|_stddev_28d от промежуточного признака|
+|imp_mldata_user_vtr_avg_28d|imp_mldata_user_vtr (для user_id)|_avg_28d от промежуточного признака|
+|imp_mldata_user_vtr_stddev_28d|imp_mldata_user_vtr (для user_id)|_stddev_28d от промежуточного признака|
+|avg_visit_duration_avg_91d|avg_visit_duration (для user_id)|_avg_91d от промежуточного признака|
+|avg_visit_duration_stddev_91d|avg_visit_duration (для user_id)|_stddev_91d от промежуточного признака|
+|page_depth_avg_91d|page_depth (для user_id)|_avg_91d от промежуточного признака|
+|page_depth_stddev_91d|page_depth (для user_id)|_stddev_91d от промежуточного признака|
+|avg_duration_per_page_avg_91d|avg_duration_per_page (для user_id)|_avg_91d от промежуточного признака|
+|avg_duration_per_page_stddev_91d|avg_duration_per_page (для user_id)|_stddev_91d от промежуточного признака|
+|time_to_show_avg_91d|time_to_show (для user_id)|_avg_91d от промежуточного признака|
+|time_to_show_stddev_91d|time_to_show (для user_id)|_stddev_91d от промежуточного признака|
+|time_show_to_view_avg_91d|time_show_to_view (для user_id)|_avg_91d от промежуточного признака|
+|time_show_to_view_stddev_91d|time_show_to_view (для user_id)|_stddev_91d от промежуточного признака|
+|imp_mldata_user_ctr_avg_91d|imp_mldata_user_ctr (для user_id)|_avg_91d от промежуточного признака|
+|imp_mldata_user_ctr_stddev_91d|imp_mldata_user_ctr (для user_id)|_stddev_91d от промежуточного признака|
+|imp_mldata_user_vr_avg_91d|imp_mldata_user_vr (для user_id)|_avg_91d от промежуточного признака|
+|imp_mldata_user_vr_stddev_91d|imp_mldata_user_vr (для user_id)|_stddev_91d от промежуточного признака|
+|imp_mldata_user_vtr_avg_91d|imp_mldata_user_vtr (для user_id)|_avg_91d от промежуточного признака|
+|imp_mldata_user_vtr_stddev_91d|imp_mldata_user_vtr (для user_id)|_stddev_91d от промежуточного признака|
+|imp_mldata_user_ctr_distinct_7d|imp_mldata_user_ctr (для user_id)|_distinct_7d от промежуточного признака|
+|imp_mldata_user_vr_distinct_7d|imp_mldata_user_vr (для user_id)|_distinct_7d от промежуточного признака|
+|imp_mldata_user_vtr_distinct_7d|imp_mldata_user_vtr (для user_id)|_distinct_7d от промежуточного признака|
+|imp_mldata_user_ctr_distinct_28d|imp_mldata_user_ctr (для user_id)|_distinct_28d от промежуточного признака|
+|imp_mldata_user_vr_distinct_28d|imp_mldata_user_vr (для user_id)|_distinct_28d от промежуточного признака|
+|imp_mldata_user_vtr_distinct_28d|imp_mldata_user_vtr (для user_id)|_distinct_28d от промежуточного признака|
+|imp_mldata_user_ctr_distinct_91d|imp_mldata_user_ctr (для user_id)|_distinct_91d от промежуточного признака|
+|imp_mldata_user_vr_distinct_91d|imp_mldata_user_vr (для user_id)|_distinct_91d от промежуточного признака|
+|imp_mldata_user_vtr_distinct_91d|imp_mldata_user_vtr (для user_id)|_distinct_91d от промежуточного признака|
+|imp_mldata_user_ctr_is_zero_rate_7d|imp_mldata_user_ctr_is_zero (для user_id)|_rate_7d от промежуточного признака|
+|imp_mldata_user_vr_is_zero_rate_7d|imp_mldata_user_vr_is_zero (для user_id)|_rate_7d от промежуточного признака|
+|imp_mldata_user_vtr_is_zero_rate_7d|imp_mldata_user_vtr_is_zero (для user_id)|_rate_7d от промежуточного признака|
+|imp_mldata_user_ctr_is_high_rate_7d|imp_mldata_user_ctr_is_high (для user_id)|_rate_7d от промежуточного признака|
+|imp_mldata_user_vr_is_high_rate_7d|imp_mldata_user_vr_is_high (для user_id)|_rate_7d от промежуточного признака|
+|imp_mldata_user_vtr_is_high_rate_7d|imp_mldata_user_vtr_is_high (для user_id)|_rate_7d от промежуточного признака|
+|imp_mldata_user_ctr_is_zero_rate_28d|imp_mldata_user_ctr_is_zero (для user_id)|_rate_28d от промежуточного признака|
+|imp_mldata_user_vr_is_zero_rate_28d|imp_mldata_user_vr_is_zero (для user_id)|_rate_28d от промежуточного признака|
+|imp_mldata_user_vtr_is_zero_rate_28d|imp_mldata_user_vtr_is_zero (для user_id)|_rate_28d от промежуточного признака|
+|imp_mldata_user_ctr_is_high_rate_28d|imp_mldata_user_ctr_is_high (для user_id)|_rate_28d от промежуточного признака|
+|imp_mldata_user_vr_is_high_rate_28d|imp_mldata_user_vr_is_high (для user_id)|_rate_28d от промежуточного признака|
+|imp_mldata_user_vtr_is_high_rate_28d|imp_mldata_user_vtr_is_high (для user_id)|_rate_28d от промежуточного признака|
+|imp_mldata_user_ctr_is_zero_rate_91d|imp_mldata_user_ctr_is_zero (для user_id)|_rate_91d от промежуточного признака|
+|imp_mldata_user_vr_is_zero_rate_91d|imp_mldata_user_vr_is_zero (для user_id)|_rate_91d от промежуточного признака|
+|imp_mldata_user_vtr_is_zero_rate_91d|imp_mldata_user_vtr_is_zero (для user_id)|_rate_91d от промежуточного признака|
+|imp_mldata_user_ctr_is_high_rate_91d|imp_mldata_user_ctr_is_high (для user_id)|_rate_91d от промежуточного признака|
+|imp_mldata_user_vr_is_high_rate_91d|imp_mldata_user_vr_is_high (для user_id)|_rate_91d от промежуточного признака|
+|imp_mldata_user_vtr_is_high_rate_91d|imp_mldata_user_vtr_is_high (для user_id)|_rate_91d от промежуточного признака|
+|user_id_events_sum_7d|daily_events (для user_id)|_sum_7d от промежуточного признака|
+|user_id_events_avg_per_day_7d|daily_events (для user_id)|_avg_per_day_7d от промежуточного признака|
+|user_id_events_sum_28d|daily_events (для user_id)|_sum_28d от промежуточного признака|
+|user_id_events_avg_per_day_28d|daily_events (для user_id)|_avg_per_day_28d от промежуточного признака|
+|user_id_events_sum_91d|daily_events (для user_id)|_sum_91d от промежуточного признака|
+|user_id_events_avg_per_day_91d|daily_events (для user_id)|_avg_per_day_91d от промежуточного признака|
+|user_id_num_periods_7d|(периоды user_id)|_num_periods_7d|
+|user_id_avg_period_length_7d|(периоды user_id)|_avg_period_length_7d|
+|user_id_num_periods_28d|(периоды user_id)|_num_periods_28d|
+|user_id_avg_period_length_28d|(периоды user_id)|_avg_period_length_28d|
+|user_id_num_periods_91d|(периоды user_id)|_num_periods_91d|
+|user_id_avg_period_length_91d|(периоды user_id)|_avg_period_length_91d|
