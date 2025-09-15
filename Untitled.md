@@ -70,7 +70,7 @@
 sum(f"daily_sum_{entity}").over(w) / sum(f"daily_count_{entity}").over(w)
 ```
 * `{entity}_stddev_{window-length}d`:
-	
+	Корень из разница
 ```python
 sqrt(  
 	(sum(f"daily_sum_sq_{entity}").over(w) / sum(f"daily_count_{entity}").over(w)) - \  
