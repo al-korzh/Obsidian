@@ -13,11 +13,13 @@
 * `avg_visit_duration`: поле из `rtb.yandex_preclick`
 * `page_depth`: поле из `rtb.yandex_preclick`
 * `avg_duration_per_page`: 
+	Отношение `avg_visit_duration` к `page_depth`, но для "прошлой" строки
 	```python
 	w = Window.partitionBy("user_id").orderBy(F.to_timestamp("event_time", "yyyy-MM-dd HH:mm:ss"))
 	F.lag(F.col("avg_visit_duration") / F.col("page_depth"), 1).over(w)
 	```
 * `time_to_show`: 
+	
 	```python
 	F.col("time_show") = F.expr(f"""  
 	    aggregate(        zip_with(event_type, event_time, (t, ts) -> IF(t IN ({','.join(["3", "5"])}), ts, null)),  
