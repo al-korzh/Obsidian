@@ -39,7 +39,9 @@
 	    F.unix_timestamp("time_view") - F.unix_timestamp("time_show")  
 	),
 	```
-	* Для метрик (`ctr`, `viewability`, `vtr`, `imp_mldata_user_ctr`, `imp_mldata_user_vr`, `imp_mldata_user_vtr`) создаем по
+	* Для метрик (`ctr`, `viewability`, `vtr`, `imp_mldata_user_ctr`, `imp_mldata_user_vr`, `imp_mldata_user_vtr`) создаем:
+		* `{metric}_is_zero`: 1 если значение равно 0, иначе 0. Пропуски остаются пропусками.
+		* `{metric}_is_high`: 1 если значение > 5, иначе 0. Пропуски остаются пропусками.
 ##### Предагрегация
 В процессе этого шага формируются предварительные срезы данных для каждой сущности, что используются для вычисления конечных статистик.
 
