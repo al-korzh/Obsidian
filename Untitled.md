@@ -78,12 +78,11 @@ sqrt(
 )
   ```
   * `{entity}_rate_{window-length}d`:
-	Доля значений
+		Доля значений (используется только для `_is_` метрик)
   ```python
 sum(f"daily_sum_{entity}").over(w) / sum("daily_events").over(w)
   ```
   * `{entity}_active_periods_{window-length}d`:
-	  Сумма
   ```python
 sum("daily_max_is_night").over(w) +  
 sum("daily_max_is_morning").over(w) +  
