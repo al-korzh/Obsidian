@@ -113,7 +113,7 @@ sum("daily_max_is_evening").over(w)
 	4. Рассчитать итоговое среднее: `SUM(period_lengths) / COUNT(period_lengths)`.
 
 
-##### 
+##### Статистики
 
 Здесь перечислены **«шаблоны»** признаков. Каждый из них нужно реализовать для всех указанных сущностей и окон.
 
@@ -150,7 +150,7 @@ sum("daily_max_is_evening").over(w)
     - `_avg_period_length` (для всех 3 окон)
         
 
-#### 2.2. Статистики по `host`
+###### Статистики по `host`
 
 - **Метрики:** `ctr`, `viewability`, `vtr`
     
@@ -177,7 +177,7 @@ sum("daily_max_is_evening").over(w)
     - `_avg_period_length` (для всех 3 окон)
         
 
-#### 2.3. Статистики по `device_ip`
+###### Статистики по `device_ip`
 
 - **Метрики (активность):** `device_ip_...`
     
