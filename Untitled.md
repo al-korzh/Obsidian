@@ -16,9 +16,10 @@
 	1. `daily_events`: общее количество событий. Расчитывается как количество записей, функцией count
 	2. `daily_min_ts`: минимальный timestamp.
 	3. `daily_max_ts`: максимальный timestamp.
-	4. Для метрик (`avg_visit_duration`, `page_depth`, `avg_duration_per_page`, `time_to_show`, `time_show_to_view`):
-	5. `daily_sum_{metric}`: сумма значений метрики.
-	6. `daily_count_{metric}`: количество НЕ-NULL значений метрики.
-	7. `daily_sum_sq_{metric}`: сумма квадратов значений метрики.
-	8. `daily_distincts_{metric}`: 
-	9. `daily_max_{metric}`: максимальное значение
+	4. Для метрик (`avg_visit_duration`, `page_depth`, `avg_duration_per_page`, `time_to_show`, `time_show_to_view`, `ctr`, `viewability`, `vtr`, `imp_mldata_user_ctr`, `imp_mldata_user_vr`, `imp_mldata_user_vtr`):
+		1. `daily_sum_{metric}`: сумма значений метрики.
+		2. `daily_count_{metric}`: количество НЕ-NULL значений метрики.
+		3. `daily_sum_sq_{metric}`: сумма квадратов значений метрики.
+	5. Для метрик (`ctr`, `viewability`, `vtr`, `imp_mldata_user_ctr`, `imp_mldata_user_vr`, `imp_mldata_user_vtr`):
+		1. `daily_distincts_{metric}`:  количество уникальных значений
+	6. `daily_max_{metric}`: максимальное значение
