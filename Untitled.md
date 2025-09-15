@@ -66,5 +66,12 @@
 
 * `{metric}_avg_{window-length}d`:
 ```python
-F.sum(f"daily_sum_{col}").over(w) / F.sum(f"daily_count_{col}").over(w)
+sum(f"daily_sum_{metric}").over(w) / sum(f"daily_count_{metric}").over(w)
 ```
+* `{metric}_stddev_{window-length}d`:
+* ```python
+  sqrt(  
+	    (sum(f"daily_sum_sq_{metric}").over(w) / sum(f"daily_count_{metric}").over(w)) - \  
+	    (pow(sum(f"daily_sum_{metric}").over(w) /sum(f"daily_count_{metric}").over(w), 2))  
+	)
+  ```
