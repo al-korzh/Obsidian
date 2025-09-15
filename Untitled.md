@@ -64,4 +64,7 @@
 
 ##### Простые признаки
 
-* `{metric}_avg_{window-length}d`: Сумма(всех daily_sum_) / Сумма(всех daily_count_)
+* `{metric}_avg_{window-length}d`:
+```python
+F.sum(f"daily_sum_{col}").over(w) / F.sum(f"daily_count_{col}").over(w)
+```
