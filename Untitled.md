@@ -64,14 +64,31 @@
 
 ##### Простые признаки
 
-* `{metric}_avg_{window-length}d`:
+* `{entity}_avg_{window-length}d`:
+	Простое отношение суммы сумм `daily_sum_` к сумме `daily_count_` за период.
 ```python
-sum(f"daily_sum_{metric}").over(w) / sum(f"daily_count_{metric}").over(w)
+sum(f"daily_sum_{entity}").over(w) / sum(f"daily_count_{entity}").over(w)
 ```
-* `{metric}_stddev_{window-length}d`:
-* ```python
-  sqrt(  
-	    (sum(f"daily_sum_sq_{metric}").over(w) / sum(f"daily_count_{metric}").over(w)) - \  
-	    (pow(sum(f"daily_sum_{metric}").over(w) /sum(f"daily_count_{metric}").over(w), 2))  
-	)
+* `{entity}_stddev_{window-length}d`:
+	
+```python
+sqrt(  
+	(sum(f"daily_sum_sq_{entity}").over(w) / sum(f"daily_count_{entity}").over(w)) - \  
+	(pow(sum(f"daily_sum_{entity}").over(w) /sum(f"daily_count_{entity}").over(w), 2))  
+)
+  ```
+  * `{entity}_rate_{window-length}d`:
+  ```python
+sum(f"daily_sum_{entity}").over(w) / sum("daily_events").over(w)
+  ```
+  * `{entity}_active_periods_{window-length}d`:
+  ```python
+sum("daily_max_is_night").over(w) +  
+sum("daily_max_is_morning").over(w) +  
+sum("daily_max_is_day").over(w) +  
+sum("daily_max_is_evening").over(w)  
+  ```
+  * `{entity}_distinct_{window-length}d`:
+  ```python
+  array_distinct(flatten(collect_set(f"daily_distincts_{entity}").over(w)))
   ```
