@@ -17,7 +17,13 @@
 	w = Window.partitionBy("user_id").orderBy(F.to_timestamp("event_time", "yyyy-MM-dd HH:mm:ss"))
 	F.lag(F.col("avg_visit_duration") / F.col("page_depth"), 1).over(w)
 	```
-
+* `time_to_show`: 
+	```python
+	"time_to_show": F.when(  
+    F.col("time_show").isNotNull(),  
+    F.unix_timestamp("time_show") - F.col(self.COLS['ts'])  
+)
+	```
 ##### Предагрегация
 В процессе этого шага формируются предварительные срезы данных для каждой сущности, что используются для вычисления конечных статистик.
 
