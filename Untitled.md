@@ -65,7 +65,7 @@
 ##### Простые признаки
 
 * `{entity}_avg_{window-length}d`:
-	Простое отношение суммы сумм `daily_sum_` к сумме `daily_count_` за период.
+	Отношение суммы сумм `daily_sum_` к сумме `daily_count_` за период.
 ```python
 sum(f"daily_sum_{entity}").over(w) / sum(f"daily_count_{entity}").over(w)
 ```
