@@ -12,7 +12,11 @@
 Для некоторых статистик нужно будет сперва ля ля
 * `avg_visit_duration`: поле из `rtb.yandex_preclick`
 * `page_depth`: поле из `rtb.yandex_preclick`
-* 
+* `avg_duration_per_page`: 
+	```python
+	w = Window.partitionBy("user_id").orderBy(F.to_timestamp("event_time", "yyyy-MM-dd HH:mm:ss"))
+	F.lag(F.col("avg_visit_duration") / F.col("page_depth"), 1).over(w)
+	```
 
 ##### Предагрегация
 В процессе этого шага формируются предварительные срезы данных для каждой сущности, что используются для вычисления конечных статистик.
