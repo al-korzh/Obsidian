@@ -95,6 +95,8 @@ sum("daily_max_is_evening").over(w)
   size(array_distinct(flatten(collect_set(f"daily_distincts_{entity}").over(w))))
   ```
 
+### 
+
 ##### Итоговый список признаков
 
 |   |   |   |
