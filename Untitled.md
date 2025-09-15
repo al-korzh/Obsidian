@@ -9,6 +9,7 @@
 ### Логика
 ##### Формирование дополнительных признаков
 Для некоторых статистик нужно будет сперва ля ля
+
 * `avg_visit_duration`: поле из `rtb.yandex_preclick`
 * `page_depth`: поле из `rtb.yandex_preclick`
 * `avg_duration_per_page`: 
@@ -60,3 +61,6 @@
 		1. `daily_sum_{metric}`: сумма значений метрики.
 	7. Для метрик (`is_night`, `is_morning`, `is_day`, `is_evening`):
 		1. `daily_max_{metric}`: максимальное значение
+
+##### Простые признаки
+
