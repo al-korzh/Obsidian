@@ -113,7 +113,7 @@ sum("daily_max_is_evening").over(w)
 	4. Рассчитать итоговое среднее: `SUM(period_lengths) / COUNT(period_lengths)`.
 
 
-### 
+	### 
 
 ##### Итоговый список признаков
 
