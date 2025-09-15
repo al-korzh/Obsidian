@@ -22,4 +22,7 @@
 		3. `daily_sum_sq_{metric}`: сумма квадратов значений метрики.
 	5. Для метрик (`ctr`, `viewability`, `vtr`, `imp_mldata_user_ctr`, `imp_mldata_user_vr`, `imp_mldata_user_vtr`):
 		1. `daily_distincts_{metric}`:  количество уникальных значений
-	6. `daily_max_{metric}`: максимальное значение
+	6. Для метрик:
+		1. `daily_sum_{metric}`: сумма значений метрики.
+	7. Для метрик ('is_night', 'is_morning', 'is_day', 'is_evening'):
+		1. `daily_max_{metric}`: максимальное значение
