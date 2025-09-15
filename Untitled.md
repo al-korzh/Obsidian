@@ -64,3 +64,4 @@
 
 ##### Простые признаки
 
+* `{metric}_avg_{window-length}d`: Сумма(всех daily_sum_) / Сумма(всех daily_count_)
