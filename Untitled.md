@@ -62,7 +62,7 @@
 	7. Для метрик (`is_night`, `is_morning`, `is_day`, `is_evening`):
 		1. `daily_max_{metric}`: максимальное значение
 
-##### Простые признаки
+##### Статистика
 
 * `{entity}_avg_{window-length}d`:
 	Отношение суммы сумм `daily_sum_` к сумме `daily_count_` за период.
@@ -94,3 +94,5 @@ sum("daily_max_is_evening").over(w)
   ```python
   size(array_distinct(flatten(collect_set(f"daily_distincts_{entity}").over(w))))
   ```
+
+##### 
