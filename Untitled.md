@@ -78,11 +78,12 @@ sqrt(
 )
   ```
   * `{entity}_rate_{window-length}d`:
-	Доля 
+	Доля значений
   ```python
 sum(f"daily_sum_{entity}").over(w) / sum("daily_events").over(w)
   ```
   * `{entity}_active_periods_{window-length}d`:
+	  Сумма
   ```python
 sum("daily_max_is_night").over(w) +  
 sum("daily_max_is_morning").over(w) +  
@@ -90,6 +91,7 @@ sum("daily_max_is_day").over(w) +
 sum("daily_max_is_evening").over(w)  
   ```
   * `{entity}_distinct_{window-length}d`:
+	  Количество уникальных значений
   ```python
-  array_distinct(flatten(collect_set(f"daily_distincts_{entity}").over(w)))
+  size(array_distinct(flatten(collect_set(f"daily_distincts_{entity}").over(w))))
   ```
