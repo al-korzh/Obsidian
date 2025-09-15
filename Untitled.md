@@ -190,5 +190,3 @@ sum("daily_max_is_evening").over(w)
     - `_num_periods` (для всех 3 окон)
         
     - `_avg_period_length` (для всех 3 окон)
-
-##### Итоговый список признаков
