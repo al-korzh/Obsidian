@@ -20,3 +20,4 @@
 	5. `daily_count_{metric}`: количество НЕ-NULL значений метрики.
 	6. `daily_sum_sq_{metric}`: сумма квадратов значений метрики.
 	7. `daily_distincts_{metric}`: 
+	8. `daily_max_{metric}`: максимальное значение
