@@ -55,7 +55,7 @@
 		2. `daily_count_{metric}`: количество НЕ-NULL значений метрики.
 		3. `daily_sum_sq_{metric}`: сумма квадратов значений метрики.
 	5. Для метрик (`ctr`, `viewability`, `vtr`, `imp_mldata_user_ctr`, `imp_mldata_user_vr`, `imp_mldata_user_vtr`):
-		1. `daily_distincts_{metric}`:  количество уникальных значений
+		1. `daily_distincts_{metric}`:  массив уникальных значений
 	6. Для метрик (`_is_zero`, `_is_high`):
 		1. `daily_sum_{metric}`: сумма значений метрики.
 	7. Для метрик (`is_night`, `is_morning`, `is_day`, `is_evening`):
