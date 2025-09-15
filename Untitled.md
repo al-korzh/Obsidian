@@ -90,10 +90,10 @@ sum("daily_max_is_day").over(w) +
 sum("daily_max_is_evening").over(w)  
   ```
   * `{entity}_distinct_{window-length}d`:
-	  Количество уникальных значений
-  ```python
-  size(array_distinct(flatten(collect_set(f"daily_distincts_{entity}").over(w))))
-  ```
+	  Количество уникальных значений, использует промежуточный признак `daily_distincts_`
+* `{entity}_num_periods_{window-length}d`:
+* 
+
 
 ### 
 
