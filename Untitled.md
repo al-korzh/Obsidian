@@ -115,4 +115,80 @@ sum("daily_max_is_evening").over(w)
 
 ##### 
 
+Здесь перечислены **«шаблоны»** признаков. Каждый из них нужно реализовать для всех указанных сущностей и окон.
+
+**Окна:** `7d`, `28d`, `91d`
+
+###### Статистики по `user_id`
+
+- **Метрики:** `avg_visit_duration`, `page_depth`, `avg_duration_per_page`, `time_to_show`, `time_show_to_view`
+    
+    - `..._avg` (для всех 3 окон)
+        
+    - `..._stddev` (для всех 3 окон)
+        
+- **Метрики:** `imp_mldata_user_ctr`, `imp_mldata_user_vr`, `imp_mldata_user_vtr`
+    
+    - `..._avg` (для всех 3 окон)
+        
+    - `..._stddev` (для всех 3 окон)
+        
+    - `..._distinct` (для всех 3 окон)
+        
+- **Метрики (флаги):** `..._is_zero` и `..._is_high` (для `imp_mldata_user_ctr`, `_vr`, `_vtr`)
+    
+    - `..._rate` (для всех 3 окон)
+        
+- **Метрики (активность):** `user_id_...`
+    
+    - `_events_sum` (для всех 3 окон)
+        
+    - `_events_avg_per_day` (для всех 3 окон)
+        
+    - `_num_periods` (для всех 3 окон)
+        
+    - `_avg_period_length` (для всех 3 окон)
+        
+
+#### 2.2. Статистики по `host`
+
+- **Метрики:** `ctr`, `viewability`, `vtr`
+    
+    - `..._avg` (для всех 3 окон)
+        
+    - `..._stddev` (для всех 3 окон)
+        
+    - `..._distinct` (для всех 3 окон)
+        
+- **Метрики (флаги):** `..._is_zero` и `..._is_high` (для `ctr`, `viewability`, `vtr`)
+    
+    - `..._rate` (для всех 3 окон)
+        
+- **Метрики (активность):** `host_...`
+    
+    - `_events_sum` (для всех 3 окон)
+        
+    - `_events_avg_per_day` (для всех 3 окон)
+        
+    - `_active_periods` (для всех 3 окон)
+        
+    - `_num_periods` (для всех 3 окон)
+        
+    - `_avg_period_length` (для всех 3 окон)
+        
+
+#### 2.3. Статистики по `device_ip`
+
+- **Метрики (активность):** `device_ip_...`
+    
+    - `_events_sum` (для всех 3 окон)
+        
+    - `_events_avg_per_day` (для всех 3 окон)
+        
+    - `_active_periods` (для всех 3 окон)
+        
+    - `_num_periods` (для всех 3 окон)
+        
+    - `_avg_period_length` (для всех 3 окон)
+
 ##### Итоговый список признаков
