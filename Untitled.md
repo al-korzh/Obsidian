@@ -19,7 +19,7 @@
 	F.lag(F.col("avg_visit_duration") / F.col("page_depth"), 1).over(w)
 	```
 * `time_to_show`: 
-	
+	Время до просмотро. Гипотетически это  минус время реквеста
 	```python
 	F.col("time_show") = F.expr(f"""  
 	    aggregate(        zip_with(event_type, event_time, (t, ts) -> IF(t IN ({','.join(["3", "5"])}), ts, null)),  
