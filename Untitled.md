@@ -39,6 +39,7 @@
 	    F.unix_timestamp("time_view") - F.unix_timestamp("time_show")  
 	),
 	```
+	* Для метрик (`ctr`, `viewability`, `vtr`, `imp_mldata_user_ctr`, `imp_mldata_user_vr`, `imp_mldata_user_vtr`) создаем по
 ##### Предагрегация
 В процессе этого шага формируются предварительные срезы данных для каждой сущности, что используются для вычисления конечных статистик.
 
