@@ -190,3 +190,122 @@ sum("daily_max_is_evening").over(w)
     - `_num_periods` (для всех 3 окон)
         
     - `_avg_period_length` (для всех 3 окон)
+
+
+**Тема для предварительного обсуждения, окончательный список будет сформулирован после согласования**
+
+Нужно реализовать подготовку статистических признаков для ML проекта Antifraud, чтобы передавать расширенный список вместе с реквестом при запросе к сервису инференса.
+
+Рассматриваются следующие сущности:
+
+- _user_id_
+- _device_ip_ (ipv4 ИЛИ ipv6)
+- _host_ (site_domain ИЛИ app_bundle)
+
+### Формирование дополнительных признаков
+
+Для некоторых статистик нужно будет сперва подготовить новые признаки:
+
+- avg_visit_duration: поле из rtb.yandex_preclick
+- page_depth: поле из rtb.yandex_preclick  
+    Джоин с таблицей rtb.meta_v8. Я это делал по полям (event_date, event_time, bid_id, ssp_id, dsp_id, user_id, imp_id, imp_id_source), однако там имеются дубликаты, возможно есть более эффективный способ
+- time_to_show: Время событий 3 или 5 (event_time) минус время реквеста
+    
+    F.col("time_show") = F.expr(f"""aggregate( zip_with(event_type, event_time, (t, ts) -> IF(t IN ( {','.join(["3", "5"])}), ts, null)), cast(null as timestamp), (acc, x) -> IF(x IS NOT NULL AND (acc IS NULL OR x < acc), x, acc) )""").alias("time_show")
+    
+    F.col("time_to_show") = F.when( 
+        F.col("time_show").isNotNull(), 
+        F.unix_timestamp("time_show") - F.unix_timestamp(F.to_timestamp("event_time", "yyyy-MM-dd HH:mm:ss")) 
+    )
+    
+
+- time_show_to_view: Время события 172|173|10 минус time_show
+    
+    F.col("time_view") = F.expr(f""" 
+    aggregate( zip_with(event_type, event_time, (t, ts) -> IF(t IN ( {','.join(["172", "173", "10"])} ), ts, null)), 
+    cast(null as timestamp), (acc, x) -> IF(x IS NOT NULL AND (acc IS NULL OR x < acc), x, acc) )""").alias("time_view")
+     
+    "time_show_to_view": F.when( 
+        F.col("time_view").isNotNull() & F.col("time_show").isNotNull(), 
+        F.unix_timestamp("time_view") - F.unix_timestamp("time_show") 
+    )
+    
+
+- Для метрик (ctr, viewability, vtr, imp_mldata_user_ctr, imp_mldata_user_vr, imp_mldata_user_vtr) создаются:
+    - _is_high: 1 если значение > 5, иначе 0. Пропуски остаются пропусками.
+    - _is_zero: 1 если значение равно 0, иначе 0. Пропуски остаются пропусками.
+- is_night:  
+    Бинарный признак, если час из времени реквеста >= 21 И < 3
+- is_morning:  
+    Бинарный признак, если час из времени реквеста >= 3 И < 9
+- is_day:  
+    Бинарный признак, если час из времени реквеста >= 9 И < 15
+- is_evening:  
+    Бинарный признак, если час из времени реквеста >= 15 И < 21
+
+### Предагрегация
+
+В процессе этого шага формируются предварительные срезы данных для каждой сущности, что используются для вычисления конечных статистик.
+
+- Данные группируются по каждой сущности (user_id, host, device_ip) и дате
+- Для каждой группы считаются **дневные агрегаты**:
+    - daily_events: общее количество событий.
+    - daily_min_ts: минимальный timestamp.
+    - daily_max_ts: максимальный timestamp.
+    - Для метрик (time_to_show, time_show_to_view, ctr, viewability, vtr, imp_mldata_user_ctr, imp_mldata_user_vr, imp_mldata_user_vtr):
+        - daily_sum_ {metric}: сумма значений метрики.
+        - daily_count_{metric}: количество НЕ-NULL значений метрики.
+        - daily_sum_sq_ {metric}: сумма квадратов значений метрики.
+    - Для метрик (ctr, viewability, vtr, imp_mldata_user_ctr, imp_mldata_user_vr, imp_mldata_user_vtr):
+        - daily_distincts_{metric}: массив уникальных значений
+    - Для метрик (_is_zero, _is_high):
+        - daily_sum_ {metric}: сумма значений метрики.
+    - Для метрик (is_night, is_morning, is_day, is_evening):
+        - daily_max_{metric}: максимальное значение
+
+### Статистика
+
+- avg_{window-length}d_:_  
+    Отношение суммы сумм daily_sum к сумме daily_count_ за период.
+
+sum(f"daily_sum_").over(w) / sum(f"daily_count_").over(w)
+
+- stddev_ {window-length}d:Корень из разницы среднего квадрата и квадрата среднего.
+
+sqrt((sum(f"daily_sum_sq_").over(w) / sum(f"daily_count_").over(w)) - (pow(sum(f"daily_sum_").over(w) / sum(f"daily_count_").over(w), 2))
+
+- rate_{window-length}d:  
+    Доля значений (используется только для is метрик).
+
+sum(f"daily_sum_").over(w) / sum("daily_events").over(w)
+
+- active_periods{window-length}d:  
+    Сумма всех дневных флагов по времени суток за N дней.
+
+sum("daily_max_is_night").over(w) + sum("daily_max_is_morning").over(w) + sum("daily_max_is_day").over(w) + sum("daily_max_is_evening").over(w) 
+
+- distinct_{window-length}d:  
+    Количество уникальных значений, использует промежуточный признак daily_distincts_.
+- num_periods_{window-length}d:  
+    Количество **отдельных, непрерывных периодов** активности (сессий) у сущности за N дней. Период — это один или несколько дней активности подряд. Разрыв в 2+ дня начинает новый период.  
+    **Логика расчета:**
+    - Получить **список дат**, за которые у сущности есть предагрегация в рамках окна N дней.
+    - Отсортировать даты (от новой к старой).
+    - Инициализировать num_periods = 1 (самый первый день в окне — это уже начало одного периода).
+    - Идти по списку дат и сравнивать текущую_дату с предыдущей_датой.
+    - Если предыдущая_дата - текущая_дата > 1 (т.е. разрыв больше 1 дня), то num_periods++.
+    - Вернуть num_periods.
+
+- avg_period_length_{window-length}d:  
+    Средняя длина непрерывных периодов (выше) в днях.  
+    **Логика расчета:**
+    - Получить отсортированный **список дат** (как в num_periods).
+    - Инициализировать пустой список period_lengths = [] и current_length = 0.
+    - Идти по списку дат:
+        - current_length++.
+        - Если предыдущая_дата - текущая_дата > 1 (разрыв) ИЛИ это последняя дата в списке:
+        - Добавить current_length в список period_lengths.
+        - Сбросить current_length = 0.
+    - Рассчитать итоговое среднее: SUM(period_lengths) / COUNT(period_lengths).
+
+Для любопытных полный [пайп-лайн](https://gitlab.sapient.ru/ds_projects/antifraud/-/blob/dev/pipeline/src/Preprocessor.py), однако там не только логика для текущей задачи, поэтому вряд ли стоит погружаться в него

@@ -1,2 +1,4 @@
 .trash
-.obsidian
+.obsidian/cache/
+.obsidian/workspace.json
+.obsidian/workspace-mobile.json
