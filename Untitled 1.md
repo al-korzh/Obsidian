@@ -92,3 +92,29 @@
         
 
 Выполнив этот план, вы получите надежный и значительно более производительный процесс формирования вашей витрины данных. ✅
+
+Почему нет следующих колонок
+
+1. daily_sum_avg_visit_duration
+
+2. daily_count_avg_visit_duration
+
+3. daily_sum_sq_avg_visit_duration
+
+4. daily_sum_avg_duration_per_page
+
+5. daily_count_avg_duration_per_page
+
+6. daily_sum_time_show_to_view
+
+7. daily_sum_sq_time_show_to_view
+
+8. user_id_period_id
+
+9. user_id_period_length
+
+10. user_id_is_first_in_period
+
+11. user_id_unique_period_length
+
+12. host_period_id
