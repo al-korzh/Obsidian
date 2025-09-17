@@ -1,7 +1,7 @@
 [
-  "dataview",
-  "buttons",
   "obsidian-git",
+  "buttons",
+  "dataview",
   "obsidian-kanban",
   "periodic-notes",
   "templater-obsidian"
