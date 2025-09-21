@@ -71,6 +71,7 @@ if (pages.length === 0) {
     // 4. Группируем полученные объекты по названию упражнения
     const grouped = exercises.groupBy(ex => ex.exercise);
 
+	console.log(exercises)
     // 5. Строим таблицу
     dv.table(
         ["Упражнение", "Записей", "Рекордный вес (кг)", "Последний результат", "Дата последней"],
@@ -78,7 +79,6 @@ if (pages.length === 0) {
             const sortedRows = group.rows.sort(r => r.date, 'desc');
             const latest = sortedRows[0];
             const recordWeight = Math.max(...group.rows.map(r => r.weight || 0));
-            console.log(latest)
 
             // Обработка случая, когда reps может быть массивом
             let repsValue = latest.reps;
