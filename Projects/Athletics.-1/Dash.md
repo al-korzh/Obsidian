@@ -57,7 +57,6 @@ if (pages.length === 0) {
         if (!Array.isArray(p.type)) return [];
 
         // Для каждого упражнения в массиве 'type' создаем отдельный объект
-	console.log(p)
         return p.type.map((typeName, index) => {
             return {
                 exercise: typeName,
