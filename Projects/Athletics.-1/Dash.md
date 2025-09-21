@@ -43,48 +43,56 @@ SORT due ASC
 ```dataviewjs
 
 // 1. УКАЖИТЕ ТОЧНЫЙ ПУТЬ К ПАПКЕ С ЖУРНАЛАМИ ТРЕНИРОВОК
-const FOLDER_PATH = "Projects/Athletics.-1/Logs"; // <--- ЗАМЕНИТЕ НА ВАШ ПУТЬ
+const FOLDER_PATH = "Projects/Athletics.-1/Logs";
 
-const pages = dv.pages(`"${FOLDER_PATH}"`);
-
-console.log(pages)
+// 2. Получаем страницы, у которых есть свойство (массив) 'type'
+const pages = dv.pages(`"${FOLDER_PATH}"`).where(p => p.type);
 
 if (pages.length === 0) {
-    dv.paragraph("ℹ️ В папке для логов пока нет ни одного файла.");
+    dv.paragraph("⚠️ **Данные для таблицы не найдены.** Проверьте, что в файлах-тренировках есть строки с полем `type::`.");
 } else {
-    const exercises = pages
-        .flatMap(p => p.file.lists)
-        .where(l => l.type && l.file && l.file.date);
+    // 3. "Разворачиваем" данные: создаем по одной строке на каждое упражнение в каждой заметке
+    const exercises = pages.flatMap(p => {
+        // Проверяем, что 'type' является массивом
+        if (!Array.isArray(p.type)) return [];
 
-    if (exercises.length === 0) {
-        dv.paragraph("⚠️ **Данные для таблицы не найдены.** Проверьте, что в файлах-тренировках есть свойство 'date' и строки с полем `type::`.");
-    } else {
-        const groupedExercises = exercises.groupBy(l => l.type);
+        // Для каждого упражнения в массиве 'type' создаем отдельный объект
+        return p.type.map((typeName, index) => {
+            return {
+                exercise: typeName,
+                weight: Array.isArray(p.weight) ? p.weight[index] : p.weight,
+                reps: Array.isArray(p.reps) ? p.reps[index] : p.reps,
+                date: p.file.date,
+                link: p.file.link
+            };
+        });
+    });
 
-        dv.table(
-            ["Упражнение", "Записей", "Рекордный вес (кг)", "Последний результат", "Дата последней"],
-            groupedExercises.map(group => {
-                // Защита от отсутствия даты: сначала отбираем только те записи, где ТОЧНО есть и файл, и дата
-                const validRows = group.rows.filter(r => r.file && r.file.date);
+    // 4. Группируем полученные объекты по названию упражнения
+    const grouped = exercises.groupBy(ex => ex.exercise);
 
-                if (validRows.length === 0) {
-                    return [group.key, group.rows.length, "---", "Нет данных с валидной датой", "---"];
-                }
+    // 5. Строим таблицу
+    dv.table(
+        ["Упражнение", "Записей", "Рекордный вес (кг)", "Последний результат", "Дата последней"],
+        grouped.map(group => {
+            const sortedRows = group.rows.sort(r => r.date, 'desc');
+            const latest = sortedRows[0];
+            const recordWeight = Math.max(...group.rows.map(r => r.weight || 0));
 
-                // Сортируем только валидные записи
-                const sortedRows = validRows.sort(r => r.file.date, 'desc');
-                const latest = sortedRows[0];
-                const recordWeight = Math.max(...group.rows.map(r => r.weight || 0));
+            // Обработка случая, когда reps может быть массивом
+            let repsValue = latest.reps;
+            if (Array.isArray(repsValue)) {
+                repsValue = repsValue.join(', '); // Если в reps массив, показываем все значения
+            }
 
-                return [
-                    group.key,
-                    group.rows.length,
-                    recordWeight,
-                    `${latest.weight || '?'} x ${latest.reps || '?'}`,
-                    latest.file.date.toFormat("yyyy-MM-dd")
-                ];
-            })
-        );
-    }
+            return [
+                group.key,
+                group.rows.length,
+                recordWeight,
+                `${latest.weight || '?'} x ${repsValue || '?'}`,
+                latest.date ? latest.date.toFormat("yyyy-MM-dd") : "Нет даты"
+            ];
+        })
+    );
 }
 ```
