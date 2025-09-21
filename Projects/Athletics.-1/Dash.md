@@ -47,6 +47,8 @@ const FOLDER_PATH = "Projects/Athletics.-1/Logs"; // <--- ЗАМЕНИТЕ НА 
 
 const pages = dv.pages(`"${FOLDER_PATH}"`);
 
+console.log(pages)
+
 if (pages.length === 0) {
     dv.paragraph("ℹ️ В папке для логов пока нет ни одного файла.");
 } else {
