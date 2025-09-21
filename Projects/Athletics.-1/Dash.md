@@ -57,12 +57,13 @@ if (pages.length === 0) {
         if (!Array.isArray(p.type)) return [];
 
         // Для каждого упражнения в массиве 'type' создаем отдельный объект
+	console.log(p)
         return p.type.map((typeName, index) => {
             return {
                 exercise: typeName,
                 weight: Array.isArray(p.weight) ? p.weight[index] : p.weight,
                 reps: Array.isArray(p.reps) ? p.reps[index] : p.reps,
-                date: p.file.date,
+                date: p.date,
                 link: p.file.link
             };
         });
@@ -71,7 +72,6 @@ if (pages.length === 0) {
     // 4. Группируем полученные объекты по названию упражнения
     const grouped = exercises.groupBy(ex => ex.exercise);
 
-	console.log(exercises)
     // 5. Строим таблицу
     dv.table(
         ["Упражнение", "Записей", "Рекордный вес (кг)", "Последний результат", "Дата последней"],
