@@ -1,3 +1,10 @@
 {
-  "new-note-template": "Templates/Task.md"
+  "new-note-template": "Templates/Task.md",
+  "new-note-folder": "Tasks",
+  "show-checkboxes": true,
+  "move-tags": true,
+  "move-dates": true,
+  "link-date-to-daily-note": true,
+  "archive-with-date": true,
+  "inline-metadata-position": "footer"
 }
