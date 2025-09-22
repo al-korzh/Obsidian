@@ -6,7 +6,8 @@ date:
 processed: false
 ---
 
-### Приборная Панель Дня
+### [[Projects/To Flow/-1 lvl/Dash|To Flow -1lvl]]
+
 - **Сон (оценка 1-5):**
 - **Пульс утром (RHR):** 
 - **HRV (если есть):** 
