@@ -1,5 +1,5 @@
 ---
-area:
+area: "[[Areas/Flow|Flow]]"
 tags:
   - project
 lvl: -1

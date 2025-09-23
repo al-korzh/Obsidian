@@ -1,9 +1,10 @@
 ---
+area: "[[Areas/Athletics|Athletics]]"
 tags:
   - project
-status: active
-area: "[[Areas/Athletics|Athletics]]"
-startDate: 2025-09-20
+lvl: 
+processed: false
+startDate: 
 endDate:
 ---
 
