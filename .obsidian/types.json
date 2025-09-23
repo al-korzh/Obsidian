@@ -5,6 +5,8 @@
     "tags": "tags",
     "lvl": "number",
     "status": "checkbox",
-    "processed": "checkbox"
+    "processed": "checkbox",
+    "startDate": "date",
+    "endDate": "date"
   }
 }
