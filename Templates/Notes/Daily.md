@@ -10,6 +10,7 @@ processed: false
 
 - **Стресс:**
 - **Resting Heart Rate (RHR):** 
+- **Average Daily Heart Rate:** 
 - **Heart Rate Variability (HRV):** 
 - **Сон:**
 - **Энергия:**
