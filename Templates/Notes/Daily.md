@@ -6,7 +6,7 @@ date:
 processed: false
 ---
 
-### [[To Flow|To Flow -1lvl]]
+### [[Flow|To Flow -1lvl]]
 
 - **Стресс:**
 - **Resting Heart Rate (RHR):** 
