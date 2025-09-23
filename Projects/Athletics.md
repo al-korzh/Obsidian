@@ -31,12 +31,6 @@ endDate:
 
 ### Активные задачи
 
-```dataview
-TABLE status as "Статус", due as "Срок"
-FROM #task AND !"Templates"
-WHERE project = this.file.link AND status != "done"
-SORT due ASC
-```
 
 ```dataviewjs
 
