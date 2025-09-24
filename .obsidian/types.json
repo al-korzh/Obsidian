@@ -4,6 +4,9 @@
     "cssclasses": "multitext",
     "tags": "tags",
     "lvl": "number",
-    "status": "checkbox"
+    "status": "checkbox",
+    "processed": "checkbox",
+    "startDate": "date",
+    "endDate": "date"
   }
 }

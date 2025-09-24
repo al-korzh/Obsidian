@@ -6,10 +6,11 @@ date:
 processed: false
 ---
 
-### [[To Flow|To Flow -1lvl]]
+### [[Projects/Flow|To Flow -1lvl]]
 
 - **Стресс:**
 - **Resting Heart Rate (RHR):** 
+- **Average Daily Heart Rate:** 
 - **Heart Rate Variability (HRV):** 
 - **Сон:**
 - **Энергия:**
