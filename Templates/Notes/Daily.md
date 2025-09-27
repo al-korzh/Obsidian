@@ -8,23 +8,14 @@ processed: false
 
 ### [[Projects/Flow|To Flow -1lvl]]
 
-- **Stress:**
-	- **Max:**
-	- **Min:** 
-	- **Avg:** 
-- **BPM:**
-	- **Max:**
-	- **Min:**
-	- **Avg:**
-	- **Resting:**
-	- **Sleep Avg:** 
-- **Resting Heart Rate (RHR):**
+- **Стресс:**
+- **Resting Heart Rate (RHR):** 
+- **Average Daily Heart Rate:** 
 - **Heart Rate Variability (HRV):** 
 - **Сон:**
 - **Энергия:**
-- **Настроение:**
-- **Физическое самочувствие:**
+- **Настроение:** 
+- **Физическое самочувствие:** 
 - **Питание:**
-- **Самая интенсивная физическая активность:**
 
 **Итог:**
